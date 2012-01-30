@@ -1,14 +1,15 @@
 Before working on the project you must pull all the new commits. 
 Here's how:
 
- cd ./CSE360-Project
- git remote add upstream git://github.com/LearnToPlay/CSE360-Project
- git fetch upstream
- git merge upstream/master
+  cd ./CSE360-Project
+? git remote add upstream git://github.com/LearnToPlay/CSE360-Project
+  git fetch upstream
+  git merge upstream/master
 
 
 After (Forking, Cloning,) Fixing, Fetching and Merging:
 
- git add -A
- git
-   -
+  git add -A
+  git commit -m 'Your message here'
+  git push git@github.com:username/CSE360-Project.git
+
