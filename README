@@ -7,9 +7,17 @@ Here's how:
   git merge upstream/master
 
 
-After (Forking, Cloning,) Fixing, Fetching and Merging:
+After (Forking, Cloning,) Fixing, Fetching and Merging: (watch for 'username')
 
   git add -A
   git commit -m 'Your message here'
   git push git@github.com:username/CSE360-Project.git
+
+Then go to username/CSE360-Project and send a Pull Request.
+DONE!
+
+There's probably an easier way (shorter) to do this line:
+  git push git@github.com:username/CSE360-Project.git
+I'm just not sure what it is.
+  
 
