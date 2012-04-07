@@ -12,7 +12,7 @@ public class QuizContent {
 	}
 
 	
-/*** Getter Setter ***/
+/*** Getter and Setter ***/
 	
 	public void setQuestionNumber(int questionNumber) {
 		this.questionNumber = questionNumber;
