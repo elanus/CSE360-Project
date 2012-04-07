@@ -5,17 +5,17 @@ import java.util.ArrayList;
 
 public class Quiz {
 
-	private String quizName, courseName, instructions;
+	private String quizName, courseName;
 	private int numberOfQuestions;
 	private Timestamp open, close;
 	private ArrayList<QuizContent> content = new ArrayList<QuizContent>();
+	final static private String instructions = "Read the following questions and click on a response. " +
+	"You have 20 minutes to complete the quiz.";
 	
 	public Quiz()
 	{
 		quizName = "New Quiz";
-		courseName = "New Course";
-		instructions = "Read the following questions and click on a response. " +
-				"You have 20 minutes to complete the quiz.";			
+		courseName = "New Course";			
 	}
 	
 	public void addContent()
@@ -44,10 +44,6 @@ public class Quiz {
 
 	public String getCourseName() {
 		return courseName;
-	}
-
-	public void setInstructions(String instructions) {
-		this.instructions = instructions;
 	}
 
 	public String getInstructions() {
@@ -88,6 +84,12 @@ public class Quiz {
 
 	public ArrayList<QuizContent> getContent() {
 		return content;
+	}
+
+	public String getAnswerChoice(Answers question) 
+	{
+		
+		return null;
 	}
 	
 }

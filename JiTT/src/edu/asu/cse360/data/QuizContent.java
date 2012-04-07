@@ -45,4 +45,5 @@ public class QuizContent {
 	public Answers getCorrectAnswer() {
 		return correctAnswer;
 	}
+	
 }
