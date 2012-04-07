@@ -1,10 +1,16 @@
 package asu.edu.cse360.view;
 
-public class View {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
-	public View ()
-	{
-		
-	}
+public class View extends JPanel
+{
+	static final long serialVersionUID = 1l;
 	
+	public View ()
+	{ }
+
+    public void displayMessage(String msg, short type)
+    { }
 }

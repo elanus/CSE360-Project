@@ -1,7 +1,7 @@
 package asu.edu.cse360.model;
 
-import asu.edu.cse360.data.Quiz;
 
+import asu.edu.cse360.data.*;
 
 public class ViewReportMod
 {

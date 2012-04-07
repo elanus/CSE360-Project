@@ -4,9 +4,11 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class NavigatorPanel
+public class NavigatorPanel extends JFrame
 {
-    final static String CARDPANEL1 = "Create Course";
+	static final long serialVersionUID = 1l;
+	
+	final static String CARDPANEL1 = "Create Course";
     final static String CARDPANEL2 = "Create Quiz";
     final static String CARDPANEL3 = "View Quiz Report";
     final static String CARDPANEL4 = "Take Quiz";
@@ -50,7 +52,7 @@ public class NavigatorPanel
         /** Create the "cards" **/
         JPanel CreateCourseCard = new JPanel();
         JPanel CreateQuizCard = new JPanel();
-        JPanel ViewReportCard = new ViewReportView(new ViewReportMod());
+        JPanel ViewReportCard = new ViewReportView();
         JPanel TakeQuizCard = new JPanel();
         JPanel ViewScoresCard = new JPanel();
         CreateCourseCard.add(new JLabel("<html>Create Course<br>View Panel</html>"));
