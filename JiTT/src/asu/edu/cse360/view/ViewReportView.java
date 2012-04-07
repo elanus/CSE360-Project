@@ -1,11 +1,13 @@
+package asu.edu.cse360.view;
+
 import javax.swing.*;
 import java.awt.*;
-//import java.awt.event.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
-public class ViewReportView extends JPanel
+public class ViewReportView extends View
 {
+	static final long serialVersionUID = 1l;
+	
 	// private Color wrong; // don't need
 	private Color right;
 	// private JLabel selectQuiz; // changed to local
@@ -18,13 +20,11 @@ public class ViewReportView extends JPanel
 	//private JLabel percent;
 	//private Bar Graphs
 	
-    private ViewReportMod mod;
 	private JPanel report;
 
-    ViewReportView(ViewReportMod model)
+    ViewReportView()
     {
     	right = Color.green;
-        mod = model;
         
     	JLabel selectQuiz = new JLabel("Please select a quiz: ");
     	availableReports = new JComboBox();

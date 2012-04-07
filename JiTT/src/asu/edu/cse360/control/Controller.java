@@ -8,6 +8,9 @@ public class Controller {
 	protected Model MODEL;
 	protected View VIEW;
 	
+	public Controller()
+	{}
+	
 	public Controller (Model model, View view)
 	{
 		MODEL = model;
