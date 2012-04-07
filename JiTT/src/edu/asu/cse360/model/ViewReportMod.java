@@ -1,20 +1,22 @@
 package edu.asu.cse360.model;
 
-
 import edu.asu.cse360.data.*;
+import java.util.*;
 
 public class ViewReportMod
 {
 	private Quiz key;
 	private Quiz[] studentQuizzes;
-	//private list<int[4]> studentScores;
-	//private list<double[4]> answerPercentages;
+	private ArrayList<int[]> studentScores;
+	private ArrayList<double[]> answerPercentages;
 	
 	ViewReportMod()
     {
 		key = new Quiz();
-		
-    	
+		int[] answer = {1, 2, 3, 4};
+		studentScores.add(answer);
+		double[] percents = {2.3, 323.4, 23.532, 2.52, 1.52};
+		answerPercentages.add(percents);
     }
 	
 	public void getKeyQuiz(String quiz)
