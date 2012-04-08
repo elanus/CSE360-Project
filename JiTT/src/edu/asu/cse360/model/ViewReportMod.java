@@ -36,13 +36,13 @@ public class ViewReportMod
 		return key;
 	}
 	
-	public void getStudentScores()
+	public ArrayList<int[]> getStudentScores()
 	{
-		
+		return studentScores;	
 	}
 	
-	public void getAnswerPercentages()
+	public ArrayList<double[]> getAnswerPercentages()
 	{
-		
+		return answerPercentages;	
 	}
 }
