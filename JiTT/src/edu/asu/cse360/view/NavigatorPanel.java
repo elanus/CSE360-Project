@@ -59,9 +59,9 @@ public class NavigatorPanel extends JFrame
         CreateQuizButton = new JComboBox();
         CreateQuizButton.addItem(CARDPANEL2);
         // add created quizzes (in the case of edits)
-        CreateQuizButton.addItem("Create New Quiz");
-        CreateQuizButton.addItem("Edit Temp Quiz 1");
-        CreateQuizButton.addItem("Edit Temp Quiz 2");
+//        CreateQuizButton.addItem("Create New Quiz");
+//        CreateQuizButton.addItem("Edit Temp Quiz 1");
+//        CreateQuizButton.addItem("Edit Temp Quiz 2");
         
         ViewReportButton = new JComboBox();
         ViewReportButton.addItem(CARDPANEL3);
@@ -122,8 +122,8 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == CreateQuizButton)
             {
-                JPanel CreateQuizCard = new JPanel();
-                CreateQuizCard.add(new JLabel("Create Quiz View Panel"));
+                JPanel CreateQuizCard = new CreateQuizView();
+               // CreateQuizCard.add(new JLabel("Create Quiz View Panel"));
                 cards.add(CreateQuizCard, CARDPANEL2);
                 c1.show(cards, CARDPANEL2);
             }
