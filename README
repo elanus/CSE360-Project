@@ -15,6 +15,9 @@ After Fetching and Merging:
 DONE!
 
 To change the remote 'origin':
-  git remote set-url origin git
+? git remote set-url origin git://github.com/username/CSE360-Project.git
+
+If that doesn't work, just change git://github.com/username/CSE360-Project.git
+to something else. Send Chris or Jordan an email.
   
 
