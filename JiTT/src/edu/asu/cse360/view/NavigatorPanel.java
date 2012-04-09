@@ -3,6 +3,9 @@ package edu.asu.cse360.view;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import edu.asu.cse360.model.*;
+import edu.asu.cse360.view.*;
+import edu.asu.cse360.control.*;
 
 public class NavigatorPanel extends JFrame
 {
@@ -16,7 +19,7 @@ public class NavigatorPanel extends JFrame
     JPanel cards; //a panel that uses CardLayout
     JComboBox CreateCourseButton, CreateQuizButton, ViewReportButton,
     		TakeQuizButton, ViewScoresButton;
-    JButton LogoutButton;
+    JButton asInstructButton, asStudentButton, LogoutButton;
 
     public void addComponentToPane(Container pane)
     {
@@ -29,15 +32,34 @@ public class NavigatorPanel extends JFrame
         upperPane.add(hello);
         upperPane.add(LogoutButton);
         
-        // Navigation Buttons. JMenu, JTree or whatever works best
-        JPanel navigationPane;
-        // show one or the other based on current user
-        // if(user.isInstructor)
-        navigationPane = makeInstructor();
-        // else
-        //navigationPane = makeStudent();
+        // Navigation Buttons. JMenu, JTree or whatever works best...
+        JPanel navigationPane = new JPanel();
         
-        // CardLayout's not a good idea...
+        // changes based on user, temporary: JConfirmDialogBox
+        int n = JOptionPane.showConfirmDialog(
+        		new JFrame(),
+        		"Would you like to log in as an Instructor?",
+        		"Log in", // frame's title
+        		JOptionPane.YES_NO_OPTION
+        		);
+        if (n == JOptionPane.YES_OPTION)
+        	navigationPane = makeInstructor();
+        else if (n == JOptionPane.NO_OPTION)
+            navigationPane = makeStudent();
+        /* see also:
+        String s = (String)JOptionPane.showInputDialog(
+        		new JFrame(),
+        		"Enter Log In Number:",
+        		"Customized Dialog",
+        		JOptionPane.PLAIN_MESSAGE,
+        		null,
+        		null,
+        		"Enter ID Number here"
+        		);
+        System.out.println(s);
+        */
+        
+        // CardLayout's not really good idea...
         cards = new JPanel(new CardLayout());
         
         // put everything together
@@ -112,6 +134,7 @@ public class NavigatorPanel extends JFrame
         public void actionPerformed(ActionEvent e)
         {
         	// specific cards are identified by their names (Strings)
+        	// CardLayout = bad idea, change later
             CardLayout c1 = (CardLayout)cards.getLayout();
             if(e.getSource() == CreateCourseButton)
             {
@@ -129,8 +152,11 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewReportButton)
             {
-            	JPanel ViewReportCard = new ViewReportView();
-                cards.add(ViewReportCard, CARDPANEL3);
+            	//JPanel ViewReportCard = new ViewReportView();
+            	View ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
+            	Model ViewReportModel = new ViewReportMod();
+            	Controller ViewReportController = new ViewReportCtrl(ViewReportModel, ViewReportUI);
+            	cards.add(ViewReportUI, CARDPANEL3);
                 c1.show(cards, CARDPANEL3);
             }
             else if(e.getSource() == TakeQuizButton)

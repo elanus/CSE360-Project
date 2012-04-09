@@ -8,8 +8,8 @@ public class ViewReportView extends View
 {
 	static final long serialVersionUID = 1l;
 	
-	// private Color wrong; // don't need
-	private Color right;
+	// private Color wrong = Color.red; // don't need
+	private Color right = Color.green;
 	// private JLabel selectQuiz; // changed to local
 	private JComboBox availableReports;
 	private JButton GoButton;
@@ -24,8 +24,6 @@ public class ViewReportView extends View
 
     ViewReportView()
     {
-    	right = Color.green;
-        
     	JLabel selectQuiz = new JLabel("Please select a quiz: ");
     	availableReports = new JComboBox();
     	// // go to module, gather available reports from database
@@ -50,7 +48,15 @@ public class ViewReportView extends View
     	setLayout(new BorderLayout());
         add(selectQuizBar, BorderLayout.NORTH);
         add(report, BorderLayout.CENTER);
-    } // end of GamePanel() constructor
+    }
+    
+    ViewReportView(String reportName)
+    {
+    	this.reportName = reportName;
+        report = new JPanel(); // blank report
+        showReport();
+        add(report);
+    }
 
     public String getReportName()
     {

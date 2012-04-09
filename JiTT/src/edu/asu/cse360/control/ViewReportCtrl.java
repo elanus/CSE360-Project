@@ -7,10 +7,34 @@ import edu.asu.cse360.view.*;
 
 public class ViewReportCtrl extends Controller
 {
-	
-	ViewReportCtrl()
+	public ViewReportCtrl()
 	{
 		super();
+	}
+	
+	public ViewReportCtrl(Model mod, View view)
+	{
+		super(mod, view);
+	}
+	
+	public void setQuizData(String ReportName)
+	{
+		
+	}
+	
+	public void generateReport()
+	{
+		
+	}
+	
+	public void gatherAnswers()//Quiz key, Quiz studentQuiz)
+	{
+		// returns ArrayList<int[4]>
+	}
+	
+	public void calculatePercentages()//ArrayList<int[4]> scores, int total)
+	{
+		// returns ArrayList<double>
 	}
 	
     private class ButtonListener implements ActionListener
