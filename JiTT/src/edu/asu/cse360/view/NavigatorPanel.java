@@ -19,11 +19,11 @@ public class NavigatorPanel extends JFrame
     JPanel cards; //a panel that uses CardLayout
     JComboBox CreateCourseButton, CreateQuizButton, ViewReportButton,
     		TakeQuizButton, ViewScoresButton;
-    JButton asInstructButton, asStudentButton, LogoutButton;
+    JButton LogoutButton;
 
     public void addComponentToPane(Container pane)
     {
-        // these will be contained in the OuterPane
+    	// these will be contained in the OuterPane
         JLabel hello = new JLabel("Welcome to the JiTT Program");
         hello.setHorizontalAlignment(JLabel.CENTER);
         LogoutButton = new JButton("Logout");
@@ -152,10 +152,12 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewReportButton)
             {
-            	//JPanel ViewReportCard = new ViewReportView();
-            	View ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
+            	View ViewReportUI = new ViewReportView();
+            	if(ViewReportButton.getSelectedIndex() != 0)
+            		ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
             	Model ViewReportModel = new ViewReportMod();
             	Controller ViewReportController = new ViewReportCtrl(ViewReportModel, ViewReportUI);
+            	//ViewReportController.setQuizData((String)ViewReportButton.getSelectedItem());
             	cards.add(ViewReportUI, CARDPANEL3);
                 c1.show(cards, CARDPANEL3);
             }

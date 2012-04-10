@@ -107,14 +107,12 @@ public class ViewReportView extends View
     public void DrawBarGraph(double percent)
     {
     	/* from ChartPanel.java example 
-    	double[] values = new double[3];
+    	double[] values = new double[4];
         values[0] = 1;
         values[1] = 2;
         values[2] = 4;
-    	String[] names = new String[3];
-    	names[0] = "Item 1";
-    	names[1] = "Item 2";
-    	names[2] = "Item 3";
+        values[3] = 3;
+    	String[] answers = {"A", "B", "C", "D"};
 		String title;
   		
 		public void paintComponent(Graphics g) {
@@ -175,7 +173,7 @@ public class ViewReportView extends View
       	} */
     }
     
-    // should be in control:
+    // should be in control ...don't need?
     private class GoListener implements ActionListener
     {
         public void actionPerformed(ActionEvent e)
