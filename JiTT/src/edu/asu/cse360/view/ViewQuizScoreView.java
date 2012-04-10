@@ -10,7 +10,6 @@ public class ViewQuizScoreView extends View {
 	@SuppressWarnings("unused")
 	final private Color right = Color.green, wrong = Color.red;
 	
-	@SuppressWarnings("unused") //no Getter methods
 	private JLabel earnedPoints, totalPoints, quizName, instructions,
 					questionNumber, question, ABCorD, studentAnswer;
 	
@@ -18,43 +17,43 @@ public class ViewQuizScoreView extends View {
 	
 /*** Setters ***/
 	
-	public void setEarnedPoints(JLabel earnedPoints) {
-		this.earnedPoints = earnedPoints;
+	public void setEarnedPoints(int earnedPoints) {
+		this.earnedPoints.setText(Integer.toString(earnedPoints));
 	}
 
 
-public void setTotalPoints(JLabel totalPoints) {
-	this.totalPoints = totalPoints;
+public void setTotalPoints(int totalPoints) {
+	this.totalPoints.setText(Integer.toString(totalPoints));
 }
 
 
-public void setQuizName(JLabel quizName) {
-	this.quizName = quizName;
+public void setQuizName(String name) {
+	this.quizName.setText(name);
 }
 
 
-public void setInstructions(JLabel instructions) {
-	this.instructions = instructions;
+public void setInstructions(String instructions) {
+	this.instructions.setText(instructions);
 }
 
 
-public void setQuestionNumber(JLabel questionNumber) {
-	this.questionNumber = questionNumber;
+public void setQuestionNumber(int questionNumber) {
+	this.questionNumber.setText(Integer.toString(questionNumber));
 }
 
 
-public void setQuestion(JLabel question) {
-	this.question = question;
+public void setQuestion(String question) {
+	this.question.setText(question);
 }
 
 
-public void setABCorD(JLabel aBCorD) {
-	ABCorD = aBCorD;
+public void setABCorD(char ABCorD) {
+	this.ABCorD.setText(Character.toString(ABCorD));
 }
 
 
-public void setStudentAnswer(JLabel studentAnswer) {
-	this.studentAnswer = studentAnswer;
+public void setStudentAnswer(char studentAnswer) {
+	this.studentAnswer.setText(Character.toString(studentAnswer));
 }
 
 

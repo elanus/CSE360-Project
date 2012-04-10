@@ -170,7 +170,7 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewScoresButton)
             {
-                JPanel ViewScoresCard = new JPanel();
+                View ViewScoresCard = new ViewQuizScoreView();
                 ViewScoresCard.add(new JLabel("View Quiz Scores View Panel"));
                 cards.add(ViewScoresCard, CARDPANEL5);
                 c1.show(cards, CARDPANEL5);
@@ -178,7 +178,7 @@ public class NavigatorPanel extends JFrame
             else if(e.getSource() == LogoutButton)
             {
             	System.out.println("logging off");
-            	//	logout procedure
+            	//TODO:	logout procedure
             }
             else
             {
