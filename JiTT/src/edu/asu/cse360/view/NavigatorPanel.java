@@ -28,9 +28,9 @@ public class NavigatorPanel extends JFrame
         hello.setHorizontalAlignment(JLabel.CENTER);
         LogoutButton = new JButton("Logout");
         LogoutButton.addActionListener(new ButtonListener());
-        JPanel upperPane = new JPanel(); // FlowLayout default
-        upperPane.add(hello);
-        upperPane.add(LogoutButton);
+        JPanel upperPane = new JPanel(new BorderLayout());
+        upperPane.add(hello, BorderLayout.CENTER);
+        upperPane.add(LogoutButton, BorderLayout.EAST);
         
         // Navigation Buttons. JMenu, JTree or whatever works best...
         JPanel navigationPane = new JPanel();
