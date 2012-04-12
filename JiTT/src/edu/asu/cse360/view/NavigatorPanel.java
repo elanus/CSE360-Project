@@ -19,18 +19,18 @@ public class NavigatorPanel extends JFrame
     JPanel cards; //a panel that uses CardLayout
     JComboBox CreateCourseButton, CreateQuizButton, ViewReportButton,
     		TakeQuizButton, ViewScoresButton;
-    JButton asInstructButton, asStudentButton, LogoutButton;
+    JButton LogoutButton;
 
     public void addComponentToPane(Container pane)
     {
-        // these will be contained in the OuterPane
+    	// these will be contained in the OuterPane
         JLabel hello = new JLabel("Welcome to the JiTT Program");
         hello.setHorizontalAlignment(JLabel.CENTER);
         LogoutButton = new JButton("Logout");
         LogoutButton.addActionListener(new ButtonListener());
-        JPanel upperPane = new JPanel(); // FlowLayout default
-        upperPane.add(hello);
-        upperPane.add(LogoutButton);
+        JPanel upperPane = new JPanel(new BorderLayout());
+        upperPane.add(hello, BorderLayout.CENTER);
+        upperPane.add(LogoutButton, BorderLayout.EAST);
         
         // Navigation Buttons. JMenu, JTree or whatever works best...
         JPanel navigationPane = new JPanel();
@@ -152,10 +152,12 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewReportButton)
             {
-            	//JPanel ViewReportCard = new ViewReportView();
-            	View ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
+            	View ViewReportUI = new ViewReportView();
+            	if(ViewReportButton.getSelectedIndex() != 0)
+            		ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
             	Model ViewReportModel = new ViewReportMod();
             	Controller ViewReportController = new ViewReportCtrl(ViewReportModel, ViewReportUI);
+            	//ViewReportController.setQuizData((String)ViewReportButton.getSelectedItem());
             	cards.add(ViewReportUI, CARDPANEL3);
                 c1.show(cards, CARDPANEL3);
             }
@@ -168,7 +170,7 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewScoresButton)
             {
-                JPanel ViewScoresCard = new JPanel();
+                View ViewScoresCard = new ViewQuizScoreView();
                 ViewScoresCard.add(new JLabel("View Quiz Scores View Panel"));
                 cards.add(ViewScoresCard, CARDPANEL5);
                 c1.show(cards, CARDPANEL5);
@@ -176,7 +178,7 @@ public class NavigatorPanel extends JFrame
             else if(e.getSource() == LogoutButton)
             {
             	System.out.println("logging off");
-            	//	logout procedure
+            	//TODO:	logout procedure
             }
             else
             {

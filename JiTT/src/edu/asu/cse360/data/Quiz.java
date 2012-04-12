@@ -15,7 +15,7 @@ public class Quiz extends SQLEntity {
 	
 	public Quiz()
 	{
-		quizName = "New Quiz";
+		quizName = "Quiz Name";
 		courseName = "New Course";			
 	}
 	
