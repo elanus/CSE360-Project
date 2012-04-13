@@ -2,7 +2,8 @@ package edu.asu.cse360.view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.util.ArrayList;
+import edu.asu.cse360.data.*;
 
 public class ViewReportView extends View
 {
@@ -11,8 +12,8 @@ public class ViewReportView extends View
 	// private Color wrong = Color.red; // don't need
 	private Color right = Color.green;
 	// private JLabel selectQuiz; // changed to local
-	private JComboBox availableReports;
-	private JButton GoButton;
+	//private JComboBox availableReports; // in navigator
+	//private JButton GoButton; // in navigator
 
 	private String reportName;
 	//private JLabel question;
@@ -22,40 +23,23 @@ public class ViewReportView extends View
 	
 	private JPanel report;
 
-    ViewReportView()
+    public ViewReportView()
     {
-    	JLabel selectQuiz = new JLabel("Please select a quiz: ");
-    	availableReports = new JComboBox();
-    	// // go to module, gather available reports from database
-    	// for(int i=0; i<numOfReports; i++)
-    	//		availableReports.addItem(Reports[i]);
-    	// // where Reports[] is an array of strings
-    	// // designating quizzes that are closed
-    	// availableReports = new JComboBox(Reports); // is cleaner
-    	availableReports.addItem("Quiz 1");
-    	availableReports.addItem("Quiz 2");
-    	availableReports.addItem("Quiz 3");
-    	GoButton = new JButton("Go!");
-    	GoButton.addActionListener(new GoListener()); // in controller?
-
-    	JPanel selectQuizBar = new JPanel();
-    	selectQuizBar.add(selectQuiz);
-    	selectQuizBar.add(availableReports);
-    	selectQuizBar.add(GoButton);
-    	
-    	report = new JPanel(); // black report
-    	
-    	setLayout(new BorderLayout());
-        add(selectQuizBar, BorderLayout.NORTH);
-        add(report, BorderLayout.CENTER);
+    	JLabel selectQuiz = new JLabel("Please select a quiz");
+        add(selectQuiz);
     }
     
     ViewReportView(String reportName)
     {
     	this.reportName = reportName;
         report = new JPanel(); // blank report
-        showReport();
+        //showReport();
         add(report);
+    }
+    
+    public void setReportName(String name)
+    {
+    	reportName = name;
     }
 
     public String getReportName()
@@ -64,7 +48,7 @@ public class ViewReportView extends View
     }
    
     // should only be called from control
-    public void showReport()
+    public void showReport(Quiz key, ArrayList<double[]> percents)
     {
     	report = new JPanel(); // clear old report
     	report.setLayout(new BoxLayout(report, BoxLayout.Y_AXIS));
@@ -89,7 +73,7 @@ public class ViewReportView extends View
 	    	default: System.out.println("error, answer not enumerated type"); return;
 	    	}
 
-	    	// DrawBarGraph()
+	    	// DrawBarGraph(percents[i])
 	    	
 	    	// add each question to report
 	    	report.add(new JLabel("Question 1"));
@@ -171,25 +155,6 @@ public class ViewReportView extends View
       		x = i * barWidth + (barWidth - labelWidth) / 2;
       		g.drawString(names[i], x, y);
       	} */
-    }
-    
-    // should be in control ...don't need?
-    private class GoListener implements ActionListener
-    {
-        public void actionPerformed(ActionEvent e)
-        {
-        	// when GoButton is pressed "goEvent"
-        	// set View's reportName to that in comboBox
-        	reportName = (String)availableReports.getSelectedItem(); // is this allowed?
-        	
-        	// set module's quizzes using View's reportName
-        	// setQuizData(ReportName);
-        	
-        	// Controller generates the report
-        	// generateReport();
-        	
-        	showReport();
-        }
     }
 } // end of ViewReportView.java
 

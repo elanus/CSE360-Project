@@ -152,12 +152,12 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewReportButton)
             {
-            	View ViewReportUI = new ViewReportView();
-            	if(ViewReportButton.getSelectedIndex() != 0)
-            		ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
             	Model ViewReportModel = new ViewReportMod();
+            	View ViewReportUI = new ViewReportView();
+            	//if(ViewReportButton.getSelectedIndex() != 0)
+            	//	ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
             	Controller ViewReportController = new ViewReportCtrl(ViewReportModel, ViewReportUI);
-            	//ViewReportController.setQuizData((String)ViewReportButton.getSelectedItem());
+            	((ViewReportCtrl)ViewReportController).setQuizData((String)ViewReportButton.getSelectedItem());
             	cards.add(ViewReportUI, CARDPANEL3);
                 c1.show(cards, CARDPANEL3);
             }

@@ -11,38 +11,48 @@ public class ViewReportMod extends Model
 	private ArrayList<double[]> answerPercentages;
 	
 	public ViewReportMod()
-    {
+    { }
+	
+	public void getQuizData(String quiz)
+	{
+		// use String quiz to get instructor key from database
 		key = new Quiz();
-		int[] answer = {1, 2, 3, 4};
-		studentScores = new ArrayList();
-		studentScores.add(answer);
-		double[] percents = {2.3, 323.4, 23.532, 2.52, 1.52};
-		answerPercentages = new ArrayList();
-		answerPercentages.add(percents);
-    }
-	
-	public void getKeyQuiz(String quiz)
-	{
-		// go to database & set instructor key Quiz
-		// part of setQuizData()
-		// returns key?
+		
+		// use String quiz to get studentQuizzes from database
+		studentQuizzes = new Quiz[4];
+		studentQuizzes[0] = new Quiz();
+		studentQuizzes[1] = new Quiz();
+		studentQuizzes[2] = new Quiz();
+		studentQuizzes[3] = new Quiz();
 	}
-	
-	public void getStudentQuizzes(String quiz)
-	{
-		// go to database to gather studentQuizzes[]
-		// part of setQuizData()
-		// returns studentQuizzes?
-	}
-	
+
 	public Quiz getInstructorKey()
 	{
 		return key;
 	}
+
+	public Quiz[] getStudentQuizzes()
+	{
+		return studentQuizzes;
+	}
+	
+	public void setStudentScores()
+	{
+		int[] answer = {1, 2, 3, 4};
+		studentScores = new ArrayList<int[]>();
+		studentScores.add(answer);
+	}
+	
+	public void setAnswerPercentages()
+	{
+		double[] percents = {2.3, 323.4, 23.532, 2.52, 1.52};
+		answerPercentages = new ArrayList<double[]>();
+		answerPercentages.add(percents);
+	}
 	
 	public ArrayList<int[]> getStudentScores()
 	{
-		return studentScores;	
+		return studentScores;
 	}
 	
 	public ArrayList<double[]> getAnswerPercentages()
@@ -50,5 +60,4 @@ public class ViewReportMod extends Model
 		return answerPercentages;	
 	}
 }
-
 
