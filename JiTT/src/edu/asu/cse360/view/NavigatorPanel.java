@@ -17,9 +17,9 @@ public class NavigatorPanel extends JFrame
     final static String CARDPANEL4 = "Take Quiz";
     final static String CARDPANEL5 = "View Quiz Scores";
     JPanel cards; //a panel that uses CardLayout
-    JComboBox CreateCourseButton, CreateQuizButton, ViewReportButton,
+    JComboBox CreateCourseButton, ViewReportButton,
     		TakeQuizButton, ViewScoresButton;
-    JButton LogoutButton;
+    JButton CreateQuizButton, LogoutButton;
 
     public void addComponentToPane(Container pane)
     {
@@ -41,8 +41,8 @@ public class NavigatorPanel extends JFrame
 	        String s = (String)JOptionPane.showInputDialog(
 	        		new JFrame(),
 	        		"Please type either instructor or student\nEnter Log In Number:",
-	        		"Customized Dialog",
-	        		JOptionPane.PLAIN_MESSAGE,
+	        		"Log In",
+	        		JOptionPane.QUESTION_MESSAGE,
 	        		null,
 	        		null,
 	        		"Enter ID Number here"
@@ -80,12 +80,7 @@ public class NavigatorPanel extends JFrame
         CreateCourseButton.addItem("Edit Temp Course 1");
         CreateCourseButton.addItem("Edit Temp Course 2");
         
-        CreateQuizButton = new JComboBox();
-        CreateQuizButton.addItem(CARDPANEL2);
-        // add created quizzes (in the case of edits)
-//        CreateQuizButton.addItem("Create New Quiz");
-//        CreateQuizButton.addItem("Edit Temp Quiz 1");
-//        CreateQuizButton.addItem("Edit Temp Quiz 2");
+        CreateQuizButton = new JButton(CARDPANEL2);
         
         ViewReportButton = new JComboBox();
         ViewReportButton.addItem(CARDPANEL3);
@@ -97,10 +92,19 @@ public class NavigatorPanel extends JFrame
         CreateCourseButton.addActionListener(new ButtonListener());
         CreateQuizButton.addActionListener(new ButtonListener());
         ViewReportButton.addActionListener(new ButtonListener());
-        JPanel toReturn = new JPanel(new GridLayout(3,1));
-        toReturn.add(CreateCourseButton);
-        toReturn.add(CreateQuizButton);
-        toReturn.add(ViewReportButton);
+        
+        JPanel flow1 = new JPanel();
+        flow1.add(CreateCourseButton);
+        JPanel flow2 = new JPanel();
+        flow2.add(CreateQuizButton);
+        JPanel flow3 = new JPanel();
+        flow3.add(ViewReportButton);
+        
+        JPanel toReturn = new JPanel();
+        toReturn.setLayout(new BoxLayout(toReturn, BoxLayout.Y_AXIS));
+        toReturn.add(flow1);
+        toReturn.add(flow2);
+        toReturn.add(flow3);
         
         return toReturn;
     }
