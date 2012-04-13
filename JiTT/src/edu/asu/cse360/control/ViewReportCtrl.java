@@ -19,18 +19,6 @@ public class ViewReportCtrl extends Controller
 		super(mod, view);
 	}
 	
-	public void setQuizData(String ReportName)
-	{
-		// set the quiz data in model using String ReportName
-		((ViewReportMod) MODEL).getQuizData(ReportName);
-		
-		// logic for setting studentScores and answerPercentages
-		gatherAnswers();
-		calculatePercentages();
-		
-		generateReport(ReportName);
-	}
-	
 	public void gatherAnswers()//Quiz key, Quiz studentQuiz)
 	{
 		Quiz key = ((ViewReportMod) MODEL).getInstructorKey();
@@ -69,11 +57,18 @@ public class ViewReportCtrl extends Controller
 	
 	public void generateReport(String ReportName)
 	{		
+		// set the quiz data in model using String ReportName
+		((ViewReportMod) MODEL).getQuizData(ReportName);
+		
+		// logic for setting studentScores and answerPercentages
+		gatherAnswers();
+		calculatePercentages();
+		
 		// logic for View's showReport()
     	((ViewReportView) VIEW).setReportName(ReportName);
     	((ViewReportView) VIEW).showReport(
     			((ViewReportMod) MODEL).getInstructorKey(),
     			((ViewReportMod) MODEL).getAnswerPercentages()
     			);
-	}	
+	}
 }

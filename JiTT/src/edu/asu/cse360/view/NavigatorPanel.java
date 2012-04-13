@@ -35,29 +35,31 @@ public class NavigatorPanel extends JFrame
         // Navigation Buttons. JMenu, JTree or whatever works best...
         JPanel navigationPane = new JPanel();
         
-        // changes based on user, temporary: JConfirmDialogBox
-        int n = JOptionPane.showConfirmDialog(
-        		new JFrame(),
-        		"Would you like to log in as an Instructor?",
-        		"Log in", // frame's title
-        		JOptionPane.YES_NO_OPTION
-        		);
-        if (n == JOptionPane.YES_OPTION)
-        	navigationPane = makeInstructor();
-        else if (n == JOptionPane.NO_OPTION)
-            navigationPane = makeStudent();
-        /* see also:
-        String s = (String)JOptionPane.showInputDialog(
-        		new JFrame(),
-        		"Enter Log In Number:",
-        		"Customized Dialog",
-        		JOptionPane.PLAIN_MESSAGE,
-        		null,
-        		null,
-        		"Enter ID Number here"
-        		);
-        System.out.println(s);
-        */
+        boolean redo = true;
+        while(redo)
+        {
+	        String s = (String)JOptionPane.showInputDialog(
+	        		new JFrame(),
+	        		"Please type either instructor or student\nEnter Log In Number:",
+	        		"Customized Dialog",
+	        		JOptionPane.PLAIN_MESSAGE,
+	        		null,
+	        		null,
+	        		"Enter ID Number here"
+	        		);
+	        if(s.compareToIgnoreCase("instructor") == 0)
+	        {
+	        	navigationPane = makeInstructor();
+	        	redo = false;
+	        }
+	        else if(s.compareToIgnoreCase("student") == 0)
+	        {
+	            navigationPane = makeStudent();
+	            redo = false;
+	        }
+	        else
+	        	redo = true;
+        }
         
         // CardLayout's not really good idea...
         cards = new JPanel(new CardLayout());
@@ -152,12 +154,16 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewReportButton)
             {
+            	// Code for setting up Model, View Controller:
             	Model ViewReportModel = new ViewReportMod();
             	View ViewReportUI = new ViewReportView();
-            	//if(ViewReportButton.getSelectedIndex() != 0)
-            	//	ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
             	Controller ViewReportController = new ViewReportCtrl(ViewReportModel, ViewReportUI);
-            	((ViewReportCtrl)ViewReportController).setQuizData((String)ViewReportButton.getSelectedItem());
+            	
+            	// Call Controller method
+            	String reportName = (String)ViewReportButton.getSelectedItem();
+            	((ViewReportCtrl)ViewReportController).generateReport(reportName);
+            	
+            	// add to Navigator's ViewPanel
             	cards.add(ViewReportUI, CARDPANEL3);
                 c1.show(cards, CARDPANEL3);
             }

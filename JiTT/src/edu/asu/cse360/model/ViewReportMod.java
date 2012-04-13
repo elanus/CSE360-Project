@@ -1,7 +1,7 @@
 package edu.asu.cse360.model;
 
 import edu.asu.cse360.data.*;
-import java.util.*;
+import java.util.ArrayList;
 
 public class ViewReportMod extends Model
 {

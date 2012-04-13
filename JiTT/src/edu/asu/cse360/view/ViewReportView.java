@@ -24,18 +24,7 @@ public class ViewReportView extends View
 	private JPanel report;
 
     public ViewReportView()
-    {
-    	JLabel selectQuiz = new JLabel("Please select a quiz");
-        add(selectQuiz);
-    }
-    
-    ViewReportView(String reportName)
-    {
-    	this.reportName = reportName;
-        report = new JPanel(); // blank report
-        //showReport();
-        add(report);
-    }
+    { }
     
     public void setReportName(String name)
     {
