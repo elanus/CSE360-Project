@@ -407,8 +407,8 @@ public class CreateQuizView extends JPanel{
 						JOptionPane.showMessageDialog(null,"Question or some answers are blank, please fill them in.");
 					else
 					{
-						//save the questions and answers into database
-						questionNumber += 1;
+						//TODO:save the questions and answers into database
+						questionNumber ++;
 						questionLabel.setText("Question "+ questionNumber + ": ");
 						questionText.setText(null);
 						answerAText.setText(null);
@@ -425,8 +425,8 @@ public class CreateQuizView extends JPanel{
 						JOptionPane.showMessageDialog(null,"There's no more questions!");
 					else
 					{
-						//save the questions and answers into database
-						questionNumber += 1;
+						//TODO:save the questions and answers into database
+						questionNumber ++;
 						questionLabel.setText("Question "+ questionNumber + ": ");
 						//parse in next question with its answers
 //						questionText.setText(????);
