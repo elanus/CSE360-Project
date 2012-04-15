@@ -17,9 +17,9 @@ public class NavigatorPanel extends JFrame
     final static String CARDPANEL4 = "Take Quiz";
     final static String CARDPANEL5 = "View Quiz Scores";
     JPanel cards; //a panel that uses CardLayout
-    JComboBox CreateCourseButton, CreateQuizButton, ViewReportButton,
+    JComboBox CreateCourseButton, ViewReportButton,
     		TakeQuizButton, ViewScoresButton;
-    JButton LogoutButton;
+    JButton CreateQuizButton, LogoutButton;
 
     public void addComponentToPane(Container pane)
     {
@@ -35,29 +35,31 @@ public class NavigatorPanel extends JFrame
         // Navigation Buttons. JMenu, JTree or whatever works best...
         JPanel navigationPane = new JPanel();
         
-        // changes based on user, temporary: JConfirmDialogBox
-        int n = JOptionPane.showConfirmDialog(
-        		new JFrame(),
-        		"Would you like to log in as an Instructor?",
-        		"Log in", // frame's title
-        		JOptionPane.YES_NO_OPTION
-        		);
-        if (n == JOptionPane.YES_OPTION)
-        	navigationPane = makeInstructor();
-        else if (n == JOptionPane.NO_OPTION)
-            navigationPane = makeStudent();
-        /* see also:
-        String s = (String)JOptionPane.showInputDialog(
-        		new JFrame(),
-        		"Enter Log In Number:",
-        		"Customized Dialog",
-        		JOptionPane.PLAIN_MESSAGE,
-        		null,
-        		null,
-        		"Enter ID Number here"
-        		);
-        System.out.println(s);
-        */
+        boolean redo = true;
+        while(redo)
+        {
+	        String s = (String)JOptionPane.showInputDialog(
+	        		new JFrame(),
+	        		"Please type either instructor or student\nEnter Log In Number:",
+	        		"Log In",
+	        		JOptionPane.QUESTION_MESSAGE,
+	        		null,
+	        		null,
+	        		"Enter ID Number here"
+	        		);
+	        if(s.compareToIgnoreCase("instructor") == 0)
+	        {
+	        	navigationPane = makeInstructor();
+	        	redo = false;
+	        }
+	        else if(s.compareToIgnoreCase("student") == 0)
+	        {
+	            navigationPane = makeStudent();
+	            redo = false;
+	        }
+	        else
+	        	redo = true;
+        }
         
         // CardLayout's not really good idea...
         cards = new JPanel(new CardLayout());
@@ -78,12 +80,7 @@ public class NavigatorPanel extends JFrame
         CreateCourseButton.addItem("Edit Temp Course 1");
         CreateCourseButton.addItem("Edit Temp Course 2");
         
-        CreateQuizButton = new JComboBox();
-        CreateQuizButton.addItem(CARDPANEL2);
-        // add created quizzes (in the case of edits)
-//        CreateQuizButton.addItem("Create New Quiz");
-//        CreateQuizButton.addItem("Edit Temp Quiz 1");
-//        CreateQuizButton.addItem("Edit Temp Quiz 2");
+        CreateQuizButton = new JButton(CARDPANEL2);
         
         ViewReportButton = new JComboBox();
         ViewReportButton.addItem(CARDPANEL3);
@@ -95,11 +92,18 @@ public class NavigatorPanel extends JFrame
         CreateCourseButton.addActionListener(new ButtonListener());
         CreateQuizButton.addActionListener(new ButtonListener());
         ViewReportButton.addActionListener(new ButtonListener());
-        JPanel toReturn = new JPanel(new GridLayout(3,1));
-        toReturn.add(CreateCourseButton);
-        toReturn.add(CreateQuizButton);
-        toReturn.add(ViewReportButton);
+        JPanel flow1 = new JPanel();
+        JPanel flow2 = new JPanel();
+        JPanel flow3 = new JPanel();
+        flow1.add(CreateCourseButton);
+        flow2.add(CreateQuizButton);
+        flow3.add(ViewReportButton);
         
+        JPanel toReturn = new JPanel();
+        toReturn.setLayout(new BoxLayout(toReturn, BoxLayout.Y_AXIS));
+        toReturn.add(flow1);
+        toReturn.add(flow2);
+        toReturn.add(flow3);
         return toReturn;
     }
     
@@ -122,10 +126,15 @@ public class NavigatorPanel extends JFrame
         
         TakeQuizButton.addActionListener(new ButtonListener());
         ViewScoresButton.addActionListener(new ButtonListener());
-        JPanel toReturn = new JPanel(new GridLayout(2,1));
-        toReturn.add(TakeQuizButton);
-        toReturn.add(ViewScoresButton);
+        JPanel flow1 = new JPanel();
+        JPanel flow2 = new JPanel();
+        flow1.add(TakeQuizButton);
+        flow2.add(ViewScoresButton);
         
+        JPanel toReturn = new JPanel(new GridLayout(2,1));
+        toReturn.setLayout(new BoxLayout(toReturn, BoxLayout.Y_AXIS));
+        toReturn.add(flow1);
+        toReturn.add(flow2);
         return toReturn;
     }
 
@@ -152,12 +161,16 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewReportButton)
             {
-            	View ViewReportUI = new ViewReportView();
-            	if(ViewReportButton.getSelectedIndex() != 0)
-            		ViewReportUI = new ViewReportView((String)ViewReportButton.getSelectedItem());
+            	// Code for setting up Model, View Controller:
             	Model ViewReportModel = new ViewReportMod();
+            	View ViewReportUI = new ViewReportView();
             	Controller ViewReportController = new ViewReportCtrl(ViewReportModel, ViewReportUI);
-            	//ViewReportController.setQuizData((String)ViewReportButton.getSelectedItem());
+            	
+            	// Call Controller method
+            	String reportName = (String)ViewReportButton.getSelectedItem();
+            	((ViewReportCtrl)ViewReportController).generateReport(reportName);
+            	
+            	// add to Navigator's ViewPanel
             	cards.add(ViewReportUI, CARDPANEL3);
                 c1.show(cards, CARDPANEL3);
             }
@@ -179,6 +192,7 @@ public class NavigatorPanel extends JFrame
             {
             	System.out.println("logging off");
             	//TODO:	logout procedure
+            	System.exit(0);
             }
             else
             {

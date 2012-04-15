@@ -19,6 +19,7 @@ public class JiTT
 
         //Display the window.
         frame.pack();
+        frame.setSize(700,400);
         frame.setVisible(true);
 	}
 }

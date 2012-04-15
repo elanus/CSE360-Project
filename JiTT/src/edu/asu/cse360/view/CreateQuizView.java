@@ -3,9 +3,9 @@ package edu.asu.cse360.view;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,6 +26,7 @@ public class CreateQuizView extends JPanel{
 	JButton cancelButton2 = new JButton("Cancel");
 	JButton cancelButton3 = new JButton("Cancel");	
 	JButton nextButton = new JButton("Next");
+	JButton backButton = new JButton("Back");
 	JButton completeButton = new JButton("Complete");
 	JButton okButton = new JButton("OK");
 	JButton nextPageButton = new JButton("Next Page");
@@ -36,9 +37,12 @@ public class CreateQuizView extends JPanel{
 	private JPanel assignPanel;
 	private JPanel createFromBlankPanel;
 	boolean isCreateFromBlank = true;
+	boolean isEditingExistQuiz = false;
 	
+
 	int questionNumber = 1;
 	JLabel questionLabel = new JLabel("Question " + questionNumber + ": ");
+//	JLabel questionLabel = new JLabel();
 	JTextField questionText = new JTextField();	
 	JTextField answerAText = new JTextField();
 	JTextField answerBText = new JTextField();
@@ -51,6 +55,11 @@ public class CreateQuizView extends JPanel{
     final static String CARDPANEL3 = "Assign Quiz";
     final static String CARDPANEL4 = "Create from Blank";
     
+	JRadioButton radioButtonA;
+	JRadioButton radioButtonB;
+	JRadioButton radioButtonC;
+	JRadioButton radioButtonD;
+	
     JRadioButton quiz1;
 	JRadioButton quiz2;
 	JRadioButton quiz3;
@@ -59,10 +68,36 @@ public class CreateQuizView extends JPanel{
 	JLabel quiz2CourseLabel;
 	JLabel quiz3CourseLabel;
 	JLabel quiz4CourseLabel;
+
+	//for newly created quiz
+	String[] questions;
+	String[][] answers;
+	String[] correctAnswer;
+//	ArrayList<String> createdQuestions;
+//	ArrayList<ArrayList<String>> createdAnswers;
+//	ArrayList<String> answers;	
+//	
+//	ArrayList<String> existQuestions;
+//	ArrayList<ArrayList<String>> existAnswers;
+//	ArrayList<String> eAnswers;
+	
+	//for exist quiz list
     String[] existQuizList;
     String[] courseOfExistQuiz;
+    
+    // for exist quiz content    
+    String[] existQuestions;
+    String[][] existAnswers;
+    String[] existCorrectAnswer;
+
+	
+	int numberOfQuestions = 0;
+	int numberOfCreatedQuestions = 0;
+    int numberOfExistQuestions = 0;
     int numberOfExistQuiz = 0;
-    int quizNumber = 0;
+    int quizNumber = 0;   
+    int confirmD;
+    String inputD;
     
     private JPanel Othis = this;
     
@@ -103,22 +138,37 @@ public class CreateQuizView extends JPanel{
 		add(createFromBlankPanel,CARDPANEL4);
 	}
 	
-	
+	public void setToNull()
+	{
+		questionNumber = 1;
+		numberOfQuestions = 0;
+		numberOfExistQuiz = 0;
+		numberOfCreatedQuestions = 0;
+		quizNumber = 0; 
+		questions = null;
+		answers = null;
+		correctAnswer = null;
+		existQuestions = null;
+		existAnswers = null;
+		existCorrectAnswer = null;
+		existQuizList = null;
+		courseOfExistQuiz = null;
+		radioButtonA.setSelected(false);
+		radioButtonB.setSelected(false);
+		radioButtonC.setSelected(false);
+		radioButtonD.setSelected(false);
+		
+		
+	}
 	
 	
 	public class ExistingQuizView extends JPanel
 	{
-		JLabel t;
-		
 		
 		JPanel buttonPanel;
 		JPanel contentPanel;
 		JPanel radioButtonPanel;
 		JPanel quizPanel;
-		
-		
-		
-		
 		
 		ExistingQuizView()
 		{
@@ -200,18 +250,17 @@ public class CreateQuizView extends JPanel{
 		JLabel hint = new JLabel("Please select one of the four answers as the correct answer.");
 		JPanel answer;
 		JPanel buttonPanel;
-		JRadioButton radioButtonA;
-		JRadioButton radioButtonB;
-		JRadioButton radioButtonC;
-		JRadioButton radioButtonD;
+
 		
 		createFromBlankView()
 		{			
 			completeButton.addActionListener(new ButtonListener());
+			backButton.addActionListener(new ButtonListener());
 			nextButton.addActionListener(new ButtonListener());
 			cancelButton2.addActionListener(new ButtonListener());
 
 			buttonPanel = new JPanel();
+			buttonPanel.add(backButton);
 			buttonPanel.add(nextButton);
 			buttonPanel.add(completeButton);
 			buttonPanel.add(cancelButton2);
@@ -223,7 +272,7 @@ public class CreateQuizView extends JPanel{
 			questionPanel.add(questionText,BorderLayout.CENTER);
 
 			radioButtonA = new JRadioButton("A");
-		    radioButtonA.setSelected(true);		    
+		    radioButtonA.setSelected(false);		    
 		    radioButtonB = new JRadioButton("B");
 		    radioButtonB.setSelected(false);		    
 		    radioButtonC = new JRadioButton("C");
@@ -280,11 +329,17 @@ public class CreateQuizView extends JPanel{
 		    answer = new JPanel();
 			answer.setLayout(new BoxLayout(answer,BoxLayout.Y_AXIS));
 			answer.add(hint);
+			answer.add(Box.createVerticalGlue());
 			answer.add(questionPanel);
+			answer.add(Box.createVerticalStrut(20));
 			answer.add(answerAPanel);
+			answer.add(Box.createVerticalStrut(10));
 			answer.add(answerBPanel);
+			answer.add(Box.createVerticalStrut(10));
 			answer.add(answerCPanel);
+			answer.add(Box.createVerticalStrut(10));
 			answer.add(answerDPanel);
+			answer.add(Box.createVerticalStrut(10));
 			answer.add(buttonPanel);
 			
 			add(answer);
@@ -296,13 +351,23 @@ public class CreateQuizView extends JPanel{
 				//parse the correct answer into Model Class
 				Object source = event.getSource();
 				//correct answer = sourse --->  "A" or "B" or "C" or "D"
-				if(source == radioButtonB)
-					answerBText.setText("for testing!");
+				if(source == radioButtonA)
+				//	answerBText.setText("for testing!");
+					correctAnswer[questionNumber-1] = "A";
+				else if(source == radioButtonB)
+					correctAnswer[questionNumber-1] = "B";
+				else if(source == radioButtonC)
+					correctAnswer[questionNumber-1] = "C";
+				else if(source == radioButtonD)
+					correctAnswer[questionNumber-1] = "D";
+				System.out.println("correct answer is :" + correctAnswer[questionNumber-1]);//for testing!!!
+				
 			}
 			
 		}
 
 	}
+	
 	public class AssignQuizView extends JPanel{
 		JLabel title;
 		AssignQuizView()
@@ -314,6 +379,9 @@ public class CreateQuizView extends JPanel{
 			add(cancelButton3);
 		}
 	}
+	
+	
+	
 	private class ButtonListener implements ActionListener
 	{
 		public void actionPerformed(ActionEvent event)
@@ -321,27 +389,193 @@ public class CreateQuizView extends JPanel{
 			CardLayout c = (CardLayout)Othis.getLayout();
 			if(event.getSource() == createFromBlankButton)
 			{
-				c.show(Othis,CARDPANEL4);
+				questionNumber = 1;
+				numberOfQuestions = 0;
+				numberOfExistQuiz = 0;
+				numberOfCreatedQuestions = 0;
+				quizNumber = 0;
+				questionLabel.setText("Question "+ questionNumber + ": ");
+				
+//				createdQuestions = new ArrayList<String>();
+//				createdAnswers = new ArrayList<ArrayList<String>>();
+//				answers = new ArrayList<String>(4);
+//				c.show(Othis,CARDPANEL4);
+				inputD = JOptionPane.showInputDialog("How many questions do you need?");		
+	//			numberOfQuestions = Integer.parseInt(inputD);
+				
+				if(inputD == null)
+				;
+				else
+				{
+					for(int i = 0; i<inputD.length(); i++)
+					{
+						if(Character.isDigit(inputD.charAt(i)))
+							;
+						else
+						{
+							JOptionPane.showMessageDialog(null,"Invalid input!");
+							break;
+						}
+						numberOfQuestions = Integer.parseInt(inputD);
+						if(numberOfQuestions > 0)
+						{
+							questions = new String[numberOfQuestions];
+							answers = new String[numberOfQuestions][4];
+							correctAnswer = new String[numberOfQuestions];
+							c.show(Othis,CARDPANEL4);
+						}
+						else
+							JOptionPane.showMessageDialog(null,"Invalid input!");
+					}
+						
+				}
+							
 			}
+			
 			else if(event.getSource() == createFromExistingButton)
 			{
+				questionNumber = 1;
+				numberOfQuestions = 0;
+				numberOfCreatedQuestions = 0;
+				quizNumber = 0;
 				
 				c.show(Othis, CARDPANEL2);
 			}
-			else if((event.getSource() == cancelButton1)||(event.getSource() == cancelButton2)||(event.getSource() == cancelButton3))
+			
+			else if(event.getSource() == cancelButton1)
+			{	
+				setToNull();
+	
+//				questionNumber = 1;
+//				numberOfQuestions = 0;
+//				numberOfExistQuiz = 0;
+//				numberOfCreatedQuestions = 0;
+//				quizNumber = 0;
+////				createdQuestions = null;
+////				createdAnswers = null;
+//				questions = null;
+//				answers = null;
+//				correctAnswer = null;
+//				existQuizList = null;
+//				courseOfExistQuiz = null;
+				
+				c.first(Othis);
+			}
+			
+			else if(event.getSource() == cancelButton2)
+			{
+				//delete records in database which are already typed in
+				setToNull();
+
+//				questionNumber = 1;
+//				numberOfQuestions = 0;
+//				numberOfExistQuiz = 0;
+//				numberOfCreatedQuestions = 0;
+//				quizNumber = 0;
+//				questions = null;
+//				answers = null;
+//				correctAnswer = null;
+////				createdQuestions = null;
+////				createdAnswers = null;
+//				existQuizList = null;
+//				courseOfExistQuiz = null;
+				
+				questionText.setText(null);
+				answerAText.setText(null);
+				answerBText.setText(null);
+				answerCText.setText(null);
+				answerDText.setText(null);
+				
+				c.first(Othis);
+			}
+			
+			else if(event.getSource() == cancelButton3)
 			{
 				//delete records already typed in
 				c.first(Othis);
 			}
+			
 			else if(event.getSource() == okButton)
 			{
-				isCreateFromBlank = false;
+				//for testing!!!!!!!
+//				existQuestions = new ArrayList<String>();
+//				existAnswers = new ArrayList<ArrayList<String>>();
+//				eAnswers = new ArrayList<String>(4);				
+//				
+//				existQuestions.add("What number comes next? 2, 2, 4, 12, 48, ___");
+//				eAnswers.add("64");
+//				eAnswers.add("128");
+//				eAnswers.add("240");
+//				eAnswers.add("72");
+//				existAnswers.add(eAnswers);
+//				
+//				existQuestions.add("A plane crashed on the border or US and Canada. Where do they bury the survivors?");
+//				eAnswers.add("US");
+//				eAnswers.add("Canada");
+//				eAnswers.add("Who cares.");
+//				eAnswers.add("You don't bury survivors");
+//				existAnswers.add(eAnswers);
+//				
+//				existQuestions.add("How do you turn 2 into 5?");
+//				eAnswers.add("plus 3");
+//				eAnswers.add("multiply 2.5");
+//				eAnswers.add("Turn it upside down and look at it in a mirror.");
+//				eAnswers.add("plus -2");
+//				existAnswers.add(eAnswers);
+//				
+//				existQuestions.add("What is N? 6, 9, 27, 54, N, 2241");
+//				eAnswers.add("64");
+//				eAnswers.add("128");
+//				eAnswers.add("675");
+//				eAnswers.add("I do not know..");
+//				existAnswers.add(eAnswers);
+//
+//				createdQuestions = existQuestions;
+//				answers = eAnswers;
+//				createdAnswers = existAnswers;
+	
+				//read in the selected existing quiz content
+				
+				//for testing!!!!!!!
+				numberOfExistQuestions = 5;//for testing!!!!!!!!!
+				existQuestions = new String[numberOfExistQuestions];
+				existAnswers = new String[numberOfExistQuestions][4];
+				existCorrectAnswer = new String[numberOfExistQuestions];
+				
+				for(int i=0 ; i<numberOfExistQuestions; i++)
+				{
+					existQuestions[i]="How do you turn 2 into 5? "+ (i+1) + " time(s)";
+					existAnswers[i][0]="plus 3";
+					existAnswers[i][1]="multiply 2.5";
+					existAnswers[i][2]="Turn it upside down and look at it in a mirror.";
+					existAnswers[i][3]="plus -2";
+					existCorrectAnswer[i]="B";
+				}
+				
 				//parse existing quiz into create blank quiz page
-				questionText.setText(existQuizList[0]);//for testing
+				questionText.setText(existQuestions[0]);//for testing
+				answerAText.setText(existAnswers[0][0]);//for testing
+				answerBText.setText(existAnswers[0][1]);//for testing
+				answerCText.setText(existAnswers[0][2]);//for testing
+				answerDText.setText(existAnswers[0][3]);//for testing
+				if(existCorrectAnswer[0].equals("A"))
+					radioButtonA.setSelected(true);
+				else if(existCorrectAnswer[0].equals("B"))
+					radioButtonB.setSelected(true);
+				else if(existCorrectAnswer[0].equals("C"))
+					radioButtonC.setSelected(true);
+				else if(existCorrectAnswer[0].equals("D"))
+					radioButtonD.setSelected(true);
+				
+				isCreateFromBlank = false;
+				questionNumber = 1;
+				
 				c.show(Othis,CARDPANEL4);
 			}
+			
 			else if(event.getSource() == nextPageButton)
 			{	
+				System.out.println("number of exist quiz: " + numberOfExistQuiz);
 				if(quizNumber+4 >= numberOfExistQuiz)
 					JOptionPane.showMessageDialog(null,"It's the last page!");
 				else
@@ -398,15 +632,51 @@ public class CreateQuizView extends JPanel{
 				}
 			
 			}
+			
+			else if(event.getSource() == backButton)
+			{
+				
+				if(questionNumber == 1)
+					JOptionPane.showMessageDialog(null,"This is the first question!");
+				else
+				{
+					
+					questionNumber -= 1;
+					questionLabel.setText("Question "+ questionNumber + ": ");
+
+//					questionText.setText(createdQuestions.get(questionNumber-1));
+//					answerAText.setText(createdAnswers.get(questionNumber-1).get(0));
+//					answerBText.setText(createdAnswers.get(questionNumber-1).get(1));
+//					answerCText.setText(createdAnswers.get(questionNumber-1).get(2));
+//					answerDText.setText(createdAnswers.get(questionNumber-1).get(3));
+//					
+//					
+//					//for testing!!!!!!!!!!!!!!!!!!!!!!!!!
+//					System.out.println("back : questionNumber = " + questionNumber);
+//					System.out.println("created question = "+ createdQuestions.get(questionNumber-1));
+//					System.out.println("created answer A = "+ createdAnswers.get(questionNumber-1).get(0));
+//					System.out.println("created answer B= " + createdAnswers.get(questionNumber-1).get(1));
+//					System.out.println("created answer C= " + createdAnswers.get(questionNumber-1).get(2));
+//					System.out.println("created answer D= " + createdAnswers.get(questionNumber-1).get(3));
+					
+					questionText.setText(questions[questionNumber-1]);
+					answerAText.setText(answers[questionNumber-1][0]);
+					answerBText.setText(answers[questionNumber-1][1]);
+					answerCText.setText(answers[questionNumber-1][2]);
+					answerDText.setText(answers[questionNumber-1][3]);
+				}
+			}
+			
 			else if(event.getSource() == nextButton)
 			{	
 				
-				if(isCreateFromBlank)
+				if(isCreateFromBlank||isEditingExistQuiz)
 				{
-					if(questionText.getText().equals("")||(answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals("")))
-						JOptionPane.showMessageDialog(null,"Question or some answers are blank, please fill them in.");
+					if(questionNumber == numberOfQuestions)
+						JOptionPane.showMessageDialog(null,"This is the last question!");
 					else
 					{
+
 						//TODO:save the questions and answers into database
 						questionNumber ++;
 						questionLabel.setText("Question "+ questionNumber + ": ");
@@ -417,18 +687,131 @@ public class CreateQuizView extends JPanel{
 						answerDText.setText(null);
 						
 					}
-					
+
+					if(questionText.getText().equals("")||(answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals("")))
+							JOptionPane.showMessageDialog(null,"Question or some answers are blank, please fill them in.");
+					else
+					{
+							
+						if(questionNumber <= numberOfCreatedQuestions)
+						{
+								
+							
+//							
+//							questionText.setText(createdQuestions.get(questionNumber-1));
+//							answerAText.setText(createdAnswers.get(questionNumber-1).get(0));
+//							answerBText.setText(createdAnswers.get(questionNumber-1).get(1));
+//							answerCText.setText(createdAnswers.get(questionNumber-1).get(2));
+//							answerDText.setText(createdAnswers.get(questionNumber-1).get(3));
+							
+							questionNumber += 1;
+							questionLabel.setText("Question "+ questionNumber + ": ");
+							questionText.setText(questions[questionNumber-1]);
+							answerAText.setText(answers[questionNumber-1][0]);
+							answerBText.setText(answers[questionNumber-1][1]);
+							answerCText.setText(answers[questionNumber-1][2]);
+							answerDText.setText(answers[questionNumber-1][3]);
+						}
+						else
+						{
+							//save the questions and answers into local array list
+//							createdQuestions.add(questionNumber-1,questionText.getText());
+//							answers.add(0, answerAText.getText());
+//							answers.add(1, answerBText.getText());
+//							answers.add(2, answerBText.getText());
+//							answers.add(3, answerBText.getText());	
+//							createdAnswers.add(answers);
+								
+								
+								
+							questions[questionNumber-1] = questionText.getText();
+							answers[questionNumber-1][0] = answerAText.getText();
+							answers[questionNumber-1][1] = answerBText.getText();
+							answers[questionNumber-1][2] = answerCText.getText();
+							answers[questionNumber-1][3] = answerDText.getText();
+							
+							questionNumber ++;
+							numberOfCreatedQuestions ++;
+							questionLabel.setText("Question "+ questionNumber + ": ");
+							questionText.setText(null);
+							answerAText.setText(null);
+							answerBText.setText(null);
+							answerCText.setText(null);
+							answerDText.setText(null);
+						}
+					}
 				}
+			
 				else
 				{
-					if(questionText.getText().equals("")||(answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals("")))
-						JOptionPane.showMessageDialog(null,"There's no more questions!");
+					
+					
+					if(questionNumber == numberOfExistQuestions)
+					{
+						confirmD = JOptionPane.showConfirmDialog(null, "There's no more questions.Want to add some?");
+						if(confirmD == JOptionPane.YES_OPTION)
+						{
+							//save the questions and answers into local array list
+							inputD = JOptionPane.showInputDialog("How many questions do you want to add?");
+							
+							
+							if(inputD == null)
+								;
+								else
+								{
+									for(int i = 0; i<inputD.length(); i++)
+									{
+										if(Character.isDigit(inputD.charAt(i)))
+											;
+										else
+										{
+											JOptionPane.showMessageDialog(null,"Invalid input!");
+											break;
+										}
+										numberOfQuestions = Integer.parseInt(inputD);
+										if(numberOfQuestions > 0)
+										{
+											questions = new String[numberOfQuestions];
+											answers = new String[numberOfQuestions][4];
+											correctAnswer = new String[numberOfQuestions];
+											questionNumber += 1;
+											questionLabel.setText("Question "+ questionNumber + ": ");
+											questionText.setText(null);
+											answerAText.setText(null);
+											answerBText.setText(null);
+											answerCText.setText(null);
+											answerDText.setText(null);
+											isEditingExistQuiz = true;
+										}
+										else
+											JOptionPane.showMessageDialog(null,"Invalid input!");
+									}
+										
+								}						
+							
+						}
+					}
+						
 					else
 					{
 						//TODO:save the questions and answers into database
 						questionNumber ++;
 						questionLabel.setText("Question "+ questionNumber + ": ");
 						//parse in next question with its answers
+						//for testing!!
+						questionText.setText(existQuestions[questionNumber-1]);
+						answerAText.setText(existAnswers[questionNumber-1][0]);
+						answerBText.setText(existAnswers[questionNumber-1][1]);
+						answerCText.setText(existAnswers[questionNumber-1][2]);
+						answerDText.setText(existAnswers[questionNumber-1][3]);
+						if(existCorrectAnswer[questionNumber-1].equals("A"))
+							radioButtonA.setSelected(true);
+						else if(existCorrectAnswer[questionNumber-1].equals("B"))
+							radioButtonB.setSelected(true);
+						else if(existCorrectAnswer[questionNumber-1].equals("C"))
+							radioButtonC.setSelected(true);
+						else if(existCorrectAnswer[questionNumber-1].equals("D"))
+							radioButtonD.setSelected(true);
 //						questionText.setText(????);
 //						answerAText.setText(????);
 //						answerBText.setText(????);
@@ -436,13 +819,74 @@ public class CreateQuizView extends JPanel{
 //						answerDText.setText(????);
 					}
 				}
-				
 			}
 			else if(event.getSource() == completeButton)
-					{
+				{
+				
 					//if some answers of a question are empty, then show up an alert message	
-					c.show(Othis, CARDPANEL3);
+					if((questionText.getText().equals("")||(answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals("")))&&(questionNumber == 1))
+						JOptionPane.showMessageDialog(null,"Question or some answers are blank, please fill them in.");
+					else if((!(questionText.getText().equals("")))&&((answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals(""))))
+							JOptionPane.showMessageDialog(null,"Question or some answers are blank, please fill them in.");
+					else
+					{
+						if(questionText.getText().equals("")||(answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals("")))
+							;
+						else
+						{
+							// parse the question and answers into database
+//							createdQuestions.add(questionText.getText());
+//							answers.add(0, answerAText.getText());
+//							answers.add(1, answerBText.getText());
+//							answers.add(2, answerBText.getText());
+//							answers.add(3, answerBText.getText());	
+//							createdAnswers.add(answers);
+							
+							questions[questionNumber-1] = questionText.getText();
+							answers[questionNumber-1][0] = answerAText.getText();
+							answers[questionNumber-1][1] = answerBText.getText();
+							answers[questionNumber-1][2] = answerCText.getText();
+							answers[questionNumber-1][3] = answerDText.getText();
+						}
+					
+						
+						
+						if(numberOfCreatedQuestions < numberOfQuestions)
+						{
+							int leftNumber;
+							leftNumber = numberOfQuestions - numberOfCreatedQuestions;
+							confirmD = JOptionPane.showConfirmDialog(null,"You can add "+ leftNumber +" more questions.Are sure finish editting?");
+							if(confirmD == JOptionPane.YES_OPTION)
+							{
+								
+								setToNull();
+//								questionNumber = 1;
+//								numberOfQuestions = 0;
+//								numberOfExistQuiz = 0;
+//								numberOfCreatedQuestions = 0;
+//								quizNumber = 0; 
+//								questions = null;
+//								answers = null;
+//								correctAnswer = null;
+//								existQuestions = null;
+//								existAnswers = null;
+//								existQuizList = null;
+//								courseOfExistQuiz = null;
+								
+								questionText.setText(null);
+								answerAText.setText(null);
+								answerBText.setText(null);
+								answerCText.setText(null);
+								answerDText.setText(null);
+								c.show(Othis, CARDPANEL3);
+							}
+						
+						}
+				
+					
 					}
+					
+				}
 		}
 	}
 }
