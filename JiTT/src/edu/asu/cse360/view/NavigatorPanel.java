@@ -92,12 +92,11 @@ public class NavigatorPanel extends JFrame
         CreateCourseButton.addActionListener(new ButtonListener());
         CreateQuizButton.addActionListener(new ButtonListener());
         ViewReportButton.addActionListener(new ButtonListener());
-        
         JPanel flow1 = new JPanel();
-        flow1.add(CreateCourseButton);
         JPanel flow2 = new JPanel();
-        flow2.add(CreateQuizButton);
         JPanel flow3 = new JPanel();
+        flow1.add(CreateCourseButton);
+        flow2.add(CreateQuizButton);
         flow3.add(ViewReportButton);
         
         JPanel toReturn = new JPanel();
@@ -105,7 +104,6 @@ public class NavigatorPanel extends JFrame
         toReturn.add(flow1);
         toReturn.add(flow2);
         toReturn.add(flow3);
-        
         return toReturn;
     }
     
@@ -128,10 +126,15 @@ public class NavigatorPanel extends JFrame
         
         TakeQuizButton.addActionListener(new ButtonListener());
         ViewScoresButton.addActionListener(new ButtonListener());
-        JPanel toReturn = new JPanel(new GridLayout(2,1));
-        toReturn.add(TakeQuizButton);
-        toReturn.add(ViewScoresButton);
+        JPanel flow1 = new JPanel();
+        JPanel flow2 = new JPanel();
+        flow1.add(TakeQuizButton);
+        flow2.add(ViewScoresButton);
         
+        JPanel toReturn = new JPanel(new GridLayout(2,1));
+        toReturn.setLayout(new BoxLayout(toReturn, BoxLayout.Y_AXIS));
+        toReturn.add(flow1);
+        toReturn.add(flow2);
         return toReturn;
     }
 
@@ -189,6 +192,7 @@ public class NavigatorPanel extends JFrame
             {
             	System.out.println("logging off");
             	//TODO:	logout procedure
+            	System.exit(0);
             }
             else
             {

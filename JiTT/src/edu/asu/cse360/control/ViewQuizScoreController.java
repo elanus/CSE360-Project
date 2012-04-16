@@ -20,6 +20,7 @@ public class ViewQuizScoreController extends Controller {
 			//((ViewQuizScoreView) VIEW).setQuestion(((ViewQuizScoreModel) MODEL).getQuestion(i+1));
 
 			
+			
 		}
 	}
 	
