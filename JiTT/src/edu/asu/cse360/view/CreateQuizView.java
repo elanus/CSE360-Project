@@ -676,66 +676,72 @@ public class CreateQuizView extends JPanel{
 						JOptionPane.showMessageDialog(null,"This is the last question!");
 					else
 					{
-						if(questionText.getText().equals("")||(answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals("")))
+
+						//TODO:save the questions and answers into database
+						questionNumber ++;
+						questionLabel.setText("Question "+ questionNumber + ": ");
+						questionText.setText(null);
+						answerAText.setText(null);
+						answerBText.setText(null);
+						answerCText.setText(null);
+						answerDText.setText(null);
+						
+					}
+
+					if(questionText.getText().equals("")||(answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals("")))
 							JOptionPane.showMessageDialog(null,"Question or some answers are blank, please fill them in.");
+					else
+					{
+							
+						if(questionNumber <= numberOfCreatedQuestions)
+						{
+								
+							
+//							
+//							questionText.setText(createdQuestions.get(questionNumber-1));
+//							answerAText.setText(createdAnswers.get(questionNumber-1).get(0));
+//							answerBText.setText(createdAnswers.get(questionNumber-1).get(1));
+//							answerCText.setText(createdAnswers.get(questionNumber-1).get(2));
+//							answerDText.setText(createdAnswers.get(questionNumber-1).get(3));
+							
+							questionNumber += 1;
+							questionLabel.setText("Question "+ questionNumber + ": ");
+							questionText.setText(questions[questionNumber-1]);
+							answerAText.setText(answers[questionNumber-1][0]);
+							answerBText.setText(answers[questionNumber-1][1]);
+							answerCText.setText(answers[questionNumber-1][2]);
+							answerDText.setText(answers[questionNumber-1][3]);
+						}
 						else
 						{
+							//save the questions and answers into local array list
+//							createdQuestions.add(questionNumber-1,questionText.getText());
+//							answers.add(0, answerAText.getText());
+//							answers.add(1, answerBText.getText());
+//							answers.add(2, answerBText.getText());
+//							answers.add(3, answerBText.getText());	
+//							createdAnswers.add(answers);
+								
+								
+								
+							questions[questionNumber-1] = questionText.getText();
+							answers[questionNumber-1][0] = answerAText.getText();
+							answers[questionNumber-1][1] = answerBText.getText();
+							answers[questionNumber-1][2] = answerCText.getText();
+							answers[questionNumber-1][3] = answerDText.getText();
 							
-							if(questionNumber <= numberOfCreatedQuestions)
-							{
-								
-								
-//								
-//								questionText.setText(createdQuestions.get(questionNumber-1));
-//								answerAText.setText(createdAnswers.get(questionNumber-1).get(0));
-//								answerBText.setText(createdAnswers.get(questionNumber-1).get(1));
-//								answerCText.setText(createdAnswers.get(questionNumber-1).get(2));
-//								answerDText.setText(createdAnswers.get(questionNumber-1).get(3));
-								
-								questionNumber += 1;
-								questionLabel.setText("Question "+ questionNumber + ": ");
-								questionText.setText(questions[questionNumber-1]);
-								answerAText.setText(answers[questionNumber-1][0]);
-								answerBText.setText(answers[questionNumber-1][1]);
-								answerCText.setText(answers[questionNumber-1][2]);
-								answerDText.setText(answers[questionNumber-1][3]);
-							}
-							else
-							{
-								//save the questions and answers into local array list
-//								createdQuestions.add(questionNumber-1,questionText.getText());
-//								answers.add(0, answerAText.getText());
-//								answers.add(1, answerBText.getText());
-//								answers.add(2, answerBText.getText());
-//								answers.add(3, answerBText.getText());	
-//								createdAnswers.add(answers);
-								
-								
-								
-								questions[questionNumber-1] = questionText.getText();
-								answers[questionNumber-1][0] = answerAText.getText();
-								answers[questionNumber-1][1] = answerBText.getText();
-								answers[questionNumber-1][2] = answerCText.getText();
-								answers[questionNumber-1][3] = answerDText.getText();
-								
-								questionNumber ++;
-								numberOfCreatedQuestions ++;
-								questionLabel.setText("Question "+ questionNumber + ": ");
-								questionText.setText(null);
-								answerAText.setText(null);
-								answerBText.setText(null);
-								answerCText.setText(null);
-								answerDText.setText(null);
-								
-								
-							}
-							
-							
-							
+							questionNumber ++;
+							numberOfCreatedQuestions ++;
+							questionLabel.setText("Question "+ questionNumber + ": ");
+							questionText.setText(null);
+							answerAText.setText(null);
+							answerBText.setText(null);
+							answerCText.setText(null);
+							answerDText.setText(null);
 						}
-					}	
-					
+					}
 				}
+			
 				else
 				{
 					
@@ -788,8 +794,8 @@ public class CreateQuizView extends JPanel{
 						
 					else
 					{
-						//save the questions and answers into database
-						questionNumber += 1;
+						//TODO:save the questions and answers into database
+						questionNumber ++;
 						questionLabel.setText("Question "+ questionNumber + ": ");
 						//parse in next question with its answers
 						//for testing!!
@@ -813,7 +819,6 @@ public class CreateQuizView extends JPanel{
 //						answerDText.setText(????);
 					}
 				}
-				
 			}
 			else if(event.getSource() == completeButton)
 				{

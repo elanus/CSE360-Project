@@ -11,16 +11,7 @@ public class ViewReportView extends View
 	
 	private Color wrong = Color.red;
 	private Color right = Color.green;
-	// private JLabel selectQuiz; // in navigator
-	//private JComboBox availableReports; // in navigator
-	//private JButton GoButton; // in navigator
-
 	private String reportName;
-	//private JLabel question;
-	//private JLabel answer;
-	//private JLabel percent;
-	//private Bar Graphs
-	
 	private JPanel report;
 
     public ViewReportView()
@@ -45,6 +36,7 @@ public class ViewReportView extends View
     			+ getReportName() + "</font></html>");
     	report.add(title); // title of report
 
+    	// TODO: ask Chris how he's planning to show his quizzes
     	// get from instructor key quiz in module
     	
     	// for each QuizContent in key:
@@ -74,55 +66,66 @@ public class ViewReportView extends View
 	    	question.add(answerD);
 	    	report.add(question);
 	    	
-	    	// DrawBarGraph(percents[i])
+	    	// DrawBarGraph(percents[i], answer)
 	    	JPanel barGraph = DrawBarGraph(0.1, correctAnswer);
 	    	report.add(barGraph);
 	    	
-	    	// Dummy Filler Data:
+	    	// More Dummy Filler Data: {
 	    	JPanel question2 = new JPanel();
-	    	question2.add(new JLabel("<html><br>Question 2<br>really<br>long<br>filler<br></html>"));
 	    	question2.setLayout(new BoxLayout(question2, BoxLayout.Y_AXIS));
-	    	JPanel question3 = new JPanel();
-	    	question3.add(new JLabel("<html><br><br>Question" +
-	    			"<br>3<br><br>another<br><br>even<br><br>longer<br><br>" +
-	    			"filler<br><br>than<br><br>the<br><br>last<br><br>one<br><br><br>the<br><br>end"));
-	    	question3.setLayout(new BoxLayout(question3, BoxLayout.Y_AXIS));
+	    	question2.add(new JLabel("Another Question 2"));
+	    	question2.add(new JLabel("A) Answer 1"));
+	    	question2.add(new JLabel("B) Answer 2"));
+	    	question2.add(new JLabel("<html><font color = \"green\">C) Answer 3</font></html>"));
+	    	question2.add(new JLabel("D) Answer 4"));
 	    	report.add(question2);
+	    	JPanel barGraph2 = DrawBarGraph(0.1, 2);
+	    	report.add(barGraph2);
+	    	JPanel question3 = new JPanel();
+	    	question3.setLayout(new BoxLayout(question3, BoxLayout.Y_AXIS));
+	    	question3.add(new JLabel("Yet Another Generic Question That no one cares about 3"));
+	    	question3.add(new JLabel("A) Answer 1"));
+	    	question3.add(new JLabel("<html><font color = \"green\">B) Answer 2</font></html>"));
+	    	question3.add(new JLabel("C) Answer 3"));
+	    	question3.add(new JLabel("D) Answer 4"));
 	    	report.add(question3);
+	    	JPanel barGraph3 = DrawBarGraph(0.1, 1);
+	    	report.add(barGraph3);
+	    	// }
 	    
 	    // place on this JPanel's view
 	    JScrollPane scroll = new JScrollPane(report);
 	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	    Dimension d = new Dimension(500,300);
 	    scroll.setPreferredSize(d);
-    	add(scroll, BorderLayout.CENTER);
+	    add(scroll, BorderLayout.CENTER);
     	//validate() or revalidate()???
     	revalidate();
     }
     
+    // code reused online
     public JPanel DrawBarGraph(double percent, int correctAnswer)
     {
-    	// from ChartPanel.java example 
     	double[] values = {1,2,4,3};
     	Graph bar = new Graph(values, correctAnswer);
 		return bar;
     }
     
+    // from ChartPanel.java example
     private class Graph extends JPanel
     {
-		private String[] answers = {"A", "B", "C", "D"};
+		private String[] answers = {"A", "B", "C", "D"}; // should this be replaced by percentages?
     	private double[] values;
 		private int correct;
 	    
 		// pre-set dimensions
-		private Dimension d = new Dimension(200,200);
+		private Dimension d = new Dimension(300,100);
 	    private int clientWidth = (int)d.getWidth();
 		private int clientHeight = (int)d.getHeight();
-		private int top = 0; // top of bars
-		private int bottom = 30; // bottom of bars
-		private int barWidth = clientWidth/4;
-		private int y = clientHeight-10; // y position for labels
-		private int labelWidth = 10;
+		private int bottom = 50; // bottom of bars
+		private int barHeight = clientHeight/4;
+		private int x = 10; // x position for labels
+		private int labelHeight = -10; // 10 originally
 		
 		public Graph(double[] v, int correct)
 		{
@@ -148,30 +151,24 @@ public class ViewReportView extends View
     		if (maxValue == minValue)
       			return;
     		
-    		double scale = (clientHeight-top-bottom)/(maxValue-minValue);
+    		double scale = (clientWidth-bottom)/(maxValue-minValue);
     		
     		for (int i=0; i<values.length; i++)
     		{
-      			int valueX = i*barWidth+1;
-      			int valueY = top;
+      			int valueY = i*barHeight+1;
       			int height = (int)(values[i]*scale);
-      			if (values[i]>=0)
-        			valueY += (int)((maxValue-values[i])*scale);
-      			else
-      			{
-        			valueY += (int)(maxValue*scale);
+      			if (values[i]<0)
         			height = -height;
-      			}
       			
       			if(i == correct)
       				g.setColor(right);
       			else
       				g.setColor(wrong);
-	      		g.fillRect(valueX, valueY, barWidth-2, height);
+	      		g.fillRect(bottom, valueY, height, barHeight-2);
 	      		g.setColor(Color.black);
-	      		g.drawRect(valueX, valueY, barWidth-2, height);
+	      		g.drawRect(bottom, valueY, height, barHeight-2);
 	      		
-	      		int x = i*barWidth+(barWidth-labelWidth)/2;
+	      		int y = i*barHeight+(barHeight-labelHeight)/2;
 	      		g.drawString(answers[i], x, y);
     		}
       	}

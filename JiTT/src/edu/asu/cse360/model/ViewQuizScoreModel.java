@@ -48,8 +48,9 @@ public class ViewQuizScoreModel extends Model {
 		return null;
 	}
 	
-	public String getQuestion()
+	public String getQuestion(int num)
 	{
+		//TODO: get the question at num
 		return null;
 	}
 
