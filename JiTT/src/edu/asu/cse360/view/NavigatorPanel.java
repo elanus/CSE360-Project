@@ -144,21 +144,17 @@ public class NavigatorPanel extends JFrame
         public void actionPerformed(ActionEvent e)
         {
         	// specific cards are identified by their names (Strings)
-        	// CardLayout = bad idea, change later
-            //CardLayout c1 = (CardLayout)cards.getLayout();
             String toShow = "";
         	if(e.getSource() == CreateCourseButton)
             {
             	JPanel CreateCourseCard = new CreateCourseView();
                 cards.add(CreateCourseCard, CARDPANEL1);
-            //    c1.show(cards, CARDPANEL1);
                 toShow = CARDPANEL1;
             }
             else if(e.getSource() == CreateQuizButton)
             {
                 JPanel CreateQuizCard = new CreateQuizView();
                 cards.add(CreateQuizCard, CARDPANEL2);
-            //    c1.show(cards, CARDPANEL2);
                 toShow = CARDPANEL2;
             }
             else if(e.getSource() == ViewReportButton)
@@ -174,7 +170,6 @@ public class NavigatorPanel extends JFrame
             	
             	// add to Navigator's ViewPanel
             	cards.add(ViewReportUI, CARDPANEL3);
-            //    c1.show(cards, CARDPANEL3);
             	toShow = CARDPANEL3;
             }
             else if(e.getSource() == TakeQuizButton)
@@ -182,18 +177,10 @@ public class NavigatorPanel extends JFrame
                 JPanel TakeQuizCard = new JPanel();
                 TakeQuizCard.add(new JLabel("Take Quiz View Panel"));
                 cards.add(TakeQuizCard, CARDPANEL4);
-            //    c1.show(cards, CARDPANEL4);
                 toShow = CARDPANEL4;
             }
             else if(e.getSource() == ViewScoresButton)
             {
-<<<<<<< HEAD
-                View ViewScoresCard = new ViewQuizScoreView();
-                ViewScoresCard.add(new JLabel("View Quiz Scores View Panel"));
-                cards.add(ViewScoresCard, CARDPANEL5);
-            //    c1.show(cards, CARDPANEL5);
-                toShow = CARDPANEL5;
-=======
             	// Code for setting up Model, View Controller:
             	Model model = new ViewQuizScoreModel();
             	View view = new ViewQuizScoreView();
@@ -205,8 +192,7 @@ public class NavigatorPanel extends JFrame
             	
             	// add to Navigator's ViewPanel
                 cards.add(view, CARDPANEL5);
-                c1.show(cards, CARDPANEL5);
->>>>>>> adeababdecd7339add60381e1d59583091dbe261
+                toShow = CARDPANEL5;
             }
             else if(e.getSource() == LogoutButton)
             {
