@@ -15,6 +15,6 @@ After Fetching and Merging:
 DONE!
 
 To change the remote 'origin':
-  git remote add origin git@github.com:LearnToPlay/CSE360-Project.git
+  git remote set-url origin git@github.com:LearnToPlay/CSE360-Project.git
   
 
