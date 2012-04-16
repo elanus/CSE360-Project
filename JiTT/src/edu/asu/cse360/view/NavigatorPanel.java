@@ -4,7 +4,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import edu.asu.cse360.model.*;
-import edu.asu.cse360.view.*;
 import edu.asu.cse360.control.*;
 
 public class NavigatorPanel extends JFrame
@@ -24,13 +23,15 @@ public class NavigatorPanel extends JFrame
     public void addComponentToPane(Container pane)
     {
     	// these will be contained in the OuterPane
-        JLabel hello = new JLabel("Welcome to the JiTT Program");
+        JLabel hello = new JLabel("<html><font size = \"10\">Welcome to the JiTT Program</font><html>");
         hello.setHorizontalAlignment(JLabel.CENTER);
         LogoutButton = new JButton("Logout");
         LogoutButton.addActionListener(new ButtonListener());
         JPanel upperPane = new JPanel(new BorderLayout());
+        JPanel temp = new JPanel();
+        temp.add(LogoutButton);
         upperPane.add(hello, BorderLayout.CENTER);
-        upperPane.add(LogoutButton, BorderLayout.EAST);
+        upperPane.add(temp, BorderLayout.EAST);
         
         // Navigation Buttons. JMenu, JTree or whatever works best...
         JPanel navigationPane = new JPanel();
@@ -144,20 +145,21 @@ public class NavigatorPanel extends JFrame
         {
         	// specific cards are identified by their names (Strings)
         	// CardLayout = bad idea, change later
-            CardLayout c1 = (CardLayout)cards.getLayout();
-            if(e.getSource() == CreateCourseButton)
+            //CardLayout c1 = (CardLayout)cards.getLayout();
+            String toShow = "";
+        	if(e.getSource() == CreateCourseButton)
             {
-                JPanel CreateCourseCard = new JPanel();
-                CreateCourseCard.add(new JLabel("Create Course View Panel"));
+            	JPanel CreateCourseCard = new CreateCourseView();
                 cards.add(CreateCourseCard, CARDPANEL1);
-                c1.show(cards, CARDPANEL1);
+            //    c1.show(cards, CARDPANEL1);
+                toShow = CARDPANEL1;
             }
             else if(e.getSource() == CreateQuizButton)
             {
                 JPanel CreateQuizCard = new CreateQuizView();
-               // CreateQuizCard.add(new JLabel("Create Quiz View Panel"));
                 cards.add(CreateQuizCard, CARDPANEL2);
-                c1.show(cards, CARDPANEL2);
+            //    c1.show(cards, CARDPANEL2);
+                toShow = CARDPANEL2;
             }
             else if(e.getSource() == ViewReportButton)
             {
@@ -172,21 +174,24 @@ public class NavigatorPanel extends JFrame
             	
             	// add to Navigator's ViewPanel
             	cards.add(ViewReportUI, CARDPANEL3);
-                c1.show(cards, CARDPANEL3);
+            //    c1.show(cards, CARDPANEL3);
+            	toShow = CARDPANEL3;
             }
             else if(e.getSource() == TakeQuizButton)
             {
                 JPanel TakeQuizCard = new JPanel();
                 TakeQuizCard.add(new JLabel("Take Quiz View Panel"));
                 cards.add(TakeQuizCard, CARDPANEL4);
-                c1.show(cards, CARDPANEL4);
+            //    c1.show(cards, CARDPANEL4);
+                toShow = CARDPANEL4;
             }
             else if(e.getSource() == ViewScoresButton)
             {
                 View ViewScoresCard = new ViewQuizScoreView();
                 ViewScoresCard.add(new JLabel("View Quiz Scores View Panel"));
                 cards.add(ViewScoresCard, CARDPANEL5);
-                c1.show(cards, CARDPANEL5);
+            //    c1.show(cards, CARDPANEL5);
+                toShow = CARDPANEL5;
             }
             else if(e.getSource() == LogoutButton)
             {
@@ -198,6 +203,10 @@ public class NavigatorPanel extends JFrame
             {
                 System.out.println("Unknown Source");
             }
+            CardLayout c1 = (CardLayout)cards.getLayout();
+            c1.first(cards); // for first click
+            c1.show(cards, toShow);
+            //System.out.println("You Clicked " + toShow); // for debugging
         }
     }
 }
