@@ -17,11 +17,8 @@ public class ViewQuizScoreController extends Controller {
 		for(int i=0; i < ((ViewQuizScoreModel)MODEL).getTotalPoints(); ++i)
 		{
 			((ViewQuizScoreView) VIEW).setQuestionNumber(i+1);
-<<<<<<< HEAD
-//			((ViewQuizScoreView) VIEW).setQuestion(((ViewQuizScoreModel) MODEL).getQuestion(i+1));
-=======
 			//((ViewQuizScoreView) VIEW).setQuestion(((ViewQuizScoreModel) MODEL).getQuestion(i+1));
->>>>>>> upstream/master
+
 			
 		}
 	}
