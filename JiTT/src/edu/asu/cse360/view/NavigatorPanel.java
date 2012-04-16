@@ -183,9 +183,17 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == ViewScoresButton)
             {
-                View ViewScoresCard = new ViewQuizScoreView();
-                ViewScoresCard.add(new JLabel("View Quiz Scores View Panel"));
-                cards.add(ViewScoresCard, CARDPANEL5);
+            	// Code for setting up Model, View Controller:
+            	Model model = new ViewQuizScoreModel();
+            	View view = new ViewQuizScoreView();
+            	Controller controller = new ViewQuizScoreController(model, view); 
+            	
+            	// Call Controller method
+            	String scoreName = (String)ViewScoresButton.getSelectedItem();
+            	((ViewQuizScoreController)controller).generateScore(scoreName);
+            	
+            	// add to Navigator's ViewPanel
+                cards.add(view, CARDPANEL5);
                 c1.show(cards, CARDPANEL5);
             }
             else if(e.getSource() == LogoutButton)
