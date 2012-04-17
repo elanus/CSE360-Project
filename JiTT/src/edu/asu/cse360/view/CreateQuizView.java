@@ -59,6 +59,7 @@ public class CreateQuizView extends JPanel{
 	JRadioButton radioButtonB;
 	JRadioButton radioButtonC;
 	JRadioButton radioButtonD;
+	JRadioButton radioButtonE;
 	
     JRadioButton quiz1;
 	JRadioButton quiz2;
@@ -278,13 +279,15 @@ public class CreateQuizView extends JPanel{
 		    radioButtonC = new JRadioButton("C");
 		    radioButtonC.setSelected(false);		    
 		    radioButtonD = new JRadioButton("D");
-		    radioButtonD.setSelected(false);		    
+		    radioButtonD.setSelected(false);	
+		    radioButtonE = new JRadioButton("E");
+		    radioButtonE.setSelected(false);
 		    ButtonGroup group = new ButtonGroup();
 		    group.add(radioButtonA);
 		    group.add(radioButtonB);
 		    group.add(radioButtonC);
 		    group.add(radioButtonD);
-		    		 	    
+		    group.add(radioButtonE);		 	    
 		    radioButtonA.addActionListener(new RadioButtonListener());
 		    radioButtonB.addActionListener(new RadioButtonListener());
 		    radioButtonC.addActionListener(new RadioButtonListener());
@@ -395,7 +398,7 @@ public class CreateQuizView extends JPanel{
 				numberOfCreatedQuestions = 0;
 				quizNumber = 0;
 				questionLabel.setText("Question "+ questionNumber + ": ");
-				
+				radioButtonE.setSelected(true);
 //				createdQuestions = new ArrayList<String>();
 //				createdAnswers = new ArrayList<ArrayList<String>>();
 //				answers = new ArrayList<String>(4);
@@ -640,30 +643,38 @@ public class CreateQuizView extends JPanel{
 					JOptionPane.showMessageDialog(null,"This is the first question!");
 				else
 				{
+					if(isCreateFromBlank||isEditingExistQuiz)
+					{
+						questionNumber -= 1;
+						questionLabel.setText("Question "+ questionNumber + ": ");
+						
+						questionText.setText(questions[questionNumber-1]);
+						answerAText.setText(answers[questionNumber-1][0]);
+						answerBText.setText(answers[questionNumber-1][1]);
+						answerCText.setText(answers[questionNumber-1][2]);
+						answerDText.setText(answers[questionNumber-1][3]);
+					}
+					else
+					{
+						questionNumber --;
+						questionLabel.setText("Question "+ questionNumber + ": ");
+						//parse in next question with its answers
+						//for testing!!
+						questionText.setText(existQuestions[questionNumber-1]);
+						answerAText.setText(existAnswers[questionNumber-1][0]);
+						answerBText.setText(existAnswers[questionNumber-1][1]);
+						answerCText.setText(existAnswers[questionNumber-1][2]);
+						answerDText.setText(existAnswers[questionNumber-1][3]);
+						if(existCorrectAnswer[questionNumber-1].equals("A"))
+							radioButtonA.setSelected(true);
+						else if(existCorrectAnswer[questionNumber-1].equals("B"))
+							radioButtonB.setSelected(true);
+						else if(existCorrectAnswer[questionNumber-1].equals("C"))
+							radioButtonC.setSelected(true);
+						else if(existCorrectAnswer[questionNumber-1].equals("D"))
+							radioButtonD.setSelected(true);
+					}
 					
-					questionNumber -= 1;
-					questionLabel.setText("Question "+ questionNumber + ": ");
-
-//					questionText.setText(createdQuestions.get(questionNumber-1));
-//					answerAText.setText(createdAnswers.get(questionNumber-1).get(0));
-//					answerBText.setText(createdAnswers.get(questionNumber-1).get(1));
-//					answerCText.setText(createdAnswers.get(questionNumber-1).get(2));
-//					answerDText.setText(createdAnswers.get(questionNumber-1).get(3));
-//					
-//					
-//					//for testing!!!!!!!!!!!!!!!!!!!!!!!!!
-//					System.out.println("back : questionNumber = " + questionNumber);
-//					System.out.println("created question = "+ createdQuestions.get(questionNumber-1));
-//					System.out.println("created answer A = "+ createdAnswers.get(questionNumber-1).get(0));
-//					System.out.println("created answer B= " + createdAnswers.get(questionNumber-1).get(1));
-//					System.out.println("created answer C= " + createdAnswers.get(questionNumber-1).get(2));
-//					System.out.println("created answer D= " + createdAnswers.get(questionNumber-1).get(3));
-					
-					questionText.setText(questions[questionNumber-1]);
-					answerAText.setText(answers[questionNumber-1][0]);
-					answerBText.setText(answers[questionNumber-1][1]);
-					answerCText.setText(answers[questionNumber-1][2]);
-					answerDText.setText(answers[questionNumber-1][3]);
 				}
 			}
 			
@@ -677,19 +688,10 @@ public class CreateQuizView extends JPanel{
 					else
 					{
 
-						//TODO:save the questions and answers into database
-						questionNumber ++;
-						questionLabel.setText("Question "+ questionNumber + ": ");
-						questionText.setText(null);
-						answerAText.setText(null);
-						answerBText.setText(null);
-						answerCText.setText(null);
-						answerDText.setText(null);
-						
-					}
-
 					if(questionText.getText().equals("")||(answerAText.getText().equals(""))||(answerBText.getText().equals(""))||(answerBText.getText().equals(""))||(answerDText.getText().equals("")))
 							JOptionPane.showMessageDialog(null,"Question or some answers are blank, please fill them in.");
+					else if((!radioButtonA.isSelected())&&(!radioButtonB.isSelected())&&(!radioButtonC.isSelected())&&(!radioButtonD.isSelected()))
+						JOptionPane.showMessageDialog(null,"Please select a correct answer for this question!");
 					else
 					{
 							
@@ -738,10 +740,11 @@ public class CreateQuizView extends JPanel{
 							answerBText.setText(null);
 							answerCText.setText(null);
 							answerDText.setText(null);
+							radioButtonE.doClick();
 						}
 					}
 				}
-			
+				}
 				else
 				{
 					
@@ -781,6 +784,7 @@ public class CreateQuizView extends JPanel{
 											answerBText.setText(null);
 											answerCText.setText(null);
 											answerDText.setText(null);
+											radioButtonE.doClick();
 											isEditingExistQuiz = true;
 										}
 										else
@@ -878,6 +882,7 @@ public class CreateQuizView extends JPanel{
 								answerBText.setText(null);
 								answerCText.setText(null);
 								answerDText.setText(null);
+								radioButtonE.setSelected(true);
 								c.show(Othis, CARDPANEL3);
 							}
 						
