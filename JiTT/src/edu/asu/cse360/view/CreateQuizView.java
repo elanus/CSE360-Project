@@ -368,18 +368,18 @@ public class CreateQuizView extends JPanel{
 
 	}
 	
-	public class AssignQuizView extends JPanel{
-		JLabel title;
-		AssignQuizView()
-		{
-			title = new JLabel("Assign Quiz");
-			add(title);
-			ButtonListener listener = new ButtonListener();
-			cancelButton3.addActionListener(listener);
-			add(cancelButton3);
-		}
-	}
-	
+//	public class AssignQuizView extends JPanel{
+//		JLabel title;
+//		AssignQuizView()
+//		{
+//			title = new JLabel("Assign Quiz");
+//			add(title);
+//			ButtonListener listener = new ButtonListener();
+//			cancelButton3.addActionListener(listener);
+//			add(cancelButton3);
+//		}
+//	}
+//	
 	
 	
 	private class ButtonListener implements ActionListener

@@ -157,6 +157,10 @@ public class AssignQuizView extends JPanel
 		add(buttons);	
 	}
 	
+	public JButton getAssignButton(){
+		return assignButton;
+	}
+	
 	public void addComponentToPane(Container pane)
     {
 		pane.add(this);
