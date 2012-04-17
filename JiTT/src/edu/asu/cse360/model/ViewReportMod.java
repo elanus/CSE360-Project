@@ -7,7 +7,7 @@ public class ViewReportMod extends Model
 {
 	private Quiz key;
 	private Quiz[] studentQuizzes;
-	private ArrayList<int[]> studentScores;
+	private ArrayList<int[]> studentScores = new ArrayList<int[]>();
 	private ArrayList<double[]> answerPercentages;
 	
 	public ViewReportMod()
@@ -36,18 +36,14 @@ public class ViewReportMod extends Model
 		return studentQuizzes;
 	}
 	
-	public void setStudentScores()
+	public void setStudentScores(ArrayList<int[]> s)
 	{
-		int[] answer = {1, 2, 3, 4};
-		studentScores = new ArrayList<int[]>();
-		studentScores.add(answer);
+		studentScores = s;
 	}
 	
-	public void setAnswerPercentages()
+	public void setAnswerPercentages(ArrayList<double[]> d)
 	{
-		double[] percents = {2.3, 323.4, 23.532, 2.52, 1.52};
-		answerPercentages = new ArrayList<double[]>();
-		answerPercentages.add(percents);
+		answerPercentages = d;
 	}
 	
 	public ArrayList<int[]> getStudentScores()
