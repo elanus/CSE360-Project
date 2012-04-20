@@ -1,0 +1,177 @@
+package edu.asu.cse360.view;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+//import asu.edu.cse360.data.*;
+
+public class TakeQuizView extends View
+{
+	/***** Data members *****/
+	private Timer quizTimer, displayTimer;
+	// 1 minute = 60,000 milliseconds. change to 20 minutes after testing
+	private int delay = 60000; 
+	private int delay2 = 1000; // 1000ms = 1sec
+	private int minutes = 20;
+	private int seconds = 0;
+	private JButton submit, logout;
+	private JLabel instructions, timerText, timerText2, 
+				timerDisplay, JiTT, quizName;
+	private JPanel left, right, content;
+	private JScrollPane scroll;
+	private String inst = "Instructions: This is a timed quiz. " +
+			"You have 20 minutes to complete the quiz.";
+	
+	
+	/***** Methods *****/
+	// Constructor
+	public TakeQuizView()
+	{
+		// create and organize layout components
+		content = new JPanel();
+		content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+		scroll = new JScrollPane(content);
+		left = new JPanel();
+		left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+		right = new JPanel();
+		right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		this.add(Box.createRigidArea(new Dimension(5,0)));
+		this.add(left);
+		this.add(Box.createRigidArea(new Dimension(5,0)));
+		this.add(right);
+		this.add(Box.createRigidArea(new Dimension(5,0)));
+		
+		// create components for left panel
+		JiTT = new JLabel("Just-in-Time Teaching");
+		JiTT.setForeground(Color.blue);
+		JiTT.setFont(new Font("", Font.BOLD, 16));
+				
+		quizName = new JLabel("Quiz 7");
+		quizName.setFont(new Font("", Font.BOLD, 14));
+				
+		instructions = new JLabel(inst);
+		instructions.setForeground(Color.red);
+		instructions.setFont(new Font("", Font.BOLD, 14));
+		
+		// add components to left panel
+		left.add(quizName);
+		left.add(JiTT);
+		left.add(instructions);
+		left.add(scroll);
+		
+		// create components for right panel	
+		logout = new JButton("Logout");
+		logout.setAlignmentX(CENTER_ALIGNMENT);
+		logout.setAlignmentY(TOP_ALIGNMENT);
+		
+		timerText = new JLabel("Time remaining:");
+		timerText2 = new JLabel("(mins:secs)");
+		timerText.setAlignmentX(CENTER_ALIGNMENT);
+		timerText2.setAlignmentX(CENTER_ALIGNMENT);
+		timerText.setForeground(Color.BLUE);
+		timerText2.setForeground(Color.BLUE);
+		
+		timerDisplay = new JLabel(minutes + ":" + seconds);
+		timerDisplay.setAlignmentX(CENTER_ALIGNMENT);
+		timerDisplay.setForeground(Color.RED);
+		
+		right.add(Box.createRigidArea(new Dimension(0,50)));
+		submit = new JButton("Submit");
+		submit.setAlignmentX(CENTER_ALIGNMENT);
+
+		// add components to right panel
+		right.add(logout);
+		right.add(Box.createVerticalGlue());
+		right.add(timerText);
+		right.add(timerText2);
+		right.add(timerDisplay);
+		right.add(submit);
+		
+		// create components for scroll pane
+		JLabel question = new JLabel("1. What is 2+(7*2)?");
+		JRadioButton A = new JRadioButton("A. 18");
+		JRadioButton B = new JRadioButton("B. 16");
+		JRadioButton C = new JRadioButton("C. 14");
+		JRadioButton D = new JRadioButton("D. 21");
+		
+		ButtonGroup group = new ButtonGroup();
+		group.add(A);
+		group.add(B);
+		group.add(C);
+		group.add(D);
+		
+		// add components to scroll pane
+		content.add(question);
+		content.add(A);
+		content.add(B);
+		content.add(C);
+		content.add(D);
+				
+		// create and set the two timers -- quizTimer works as the internal 
+		// timer. displayTimer shows the remaining time
+		quizTimer = new Timer(delay, new quizTimerListener()); 
+		quizTimer.setRepeats(false); // only fire the action once
+		
+		displayTimer = new Timer(delay2, new displayTimerListener()); 
+		displayTimer.setRepeats(true); // fire action multiple times
+		
+		displayTimer.start();
+		quizTimer.start();
+	}
+	
+/*	public void setQuiz(Quiz quiz)
+	{	
+	}
+
+	public enum getSelectedAnswerLetter()
+	{
+	}
+	
+	/*
+	public void displayWarning()
+	{
+	}
+	
+	public void submit()
+	{
+	}
+*/
+	
+	/***** Nested classes *****/
+	
+	// quizTimerListener provides actions for the quizTimer, the internal timer
+	private class quizTimerListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event)
+		{
+			JOptionPane.showMessageDialog(null, 
+					"You have exceeded the time allowed for the quiz. The quiz will now close.",
+				    "Timeout",
+				    JOptionPane.WARNING_MESSAGE);
+		}
+	}// end quizTimerListener
+
+	// displayTimerListener provides actions for the visible "timer"
+	private class displayTimerListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent event)
+		{
+			// decrement seconds unless seconds are 0
+			if(seconds > 0)
+				seconds--;
+			// "borrow" from minutes and set seconds to 59 to continue
+			//to count down
+			else if(seconds == 0)
+			{
+				seconds = 59;
+				minutes--;
+			}
+			// update the timerDisplay label with the new time remaining
+			timerDisplay.setText(minutes + ":" + seconds);
+		}
+	}// end displayTimerListener
+
+}
+

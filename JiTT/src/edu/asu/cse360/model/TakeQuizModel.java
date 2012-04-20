@@ -1,0 +1,10 @@
+package edu.asu.cse360.model;
+
+import edu.asu.cse360.data.*;
+//import java.util.ArrayList;
+
+public class TakeQuizModel extends Model
+{
+	private Quiz quiz;
+
+}

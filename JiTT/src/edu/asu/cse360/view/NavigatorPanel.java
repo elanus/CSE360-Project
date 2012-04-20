@@ -174,9 +174,17 @@ public class NavigatorPanel extends JFrame
             }
             else if(e.getSource() == TakeQuizButton)
             {
-                JPanel TakeQuizCard = new JPanel();
-                TakeQuizCard.add(new JLabel("Take Quiz View Panel"));
-                cards.add(TakeQuizCard, CARDPANEL4);
+            	// Code for setting up Model, View Controller:
+            	Model takequizmodel = new TakeQuizModel();
+            	View takequizview = new TakeQuizView();
+            	Controller takequizcontroller = new TakeQuizController(takequizmodel, takequizview);
+            	
+               	// Call Controller Method
+            	String quizName = (String)TakeQuizButton.getSelectedItem();
+            	((TakeQuizController)takequizcontroller).getSelectedQuiz(quizName);
+                
+                // add to Navigator
+                cards.add(takequizview, CARDPANEL4);
                 toShow = CARDPANEL4;
             }
             else if(e.getSource() == ViewScoresButton)
